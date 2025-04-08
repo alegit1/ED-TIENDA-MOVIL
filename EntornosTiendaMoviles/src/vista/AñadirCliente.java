@@ -68,7 +68,7 @@ public class AñadirCliente extends JPanel {
 				int valor = JOptionPane.showConfirmDialog(null, "¿Desea insertar un nuevo cliente?");
 				if (valor == JOptionPane.OK_OPTION) {
 					BBDDmoviles b = new BBDDmoviles();
-					correcto = b.insertaDatos(c);
+					correcto = b.insertaCliente(c);
 					if (correcto) {
 						JOptionPane.showMessageDialog(null, "Insertado Correctamente");
 					} else {

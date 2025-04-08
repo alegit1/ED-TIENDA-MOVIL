@@ -74,6 +74,12 @@ public class VentanaFrame extends JFrame {
 		mnNewMenu.add(separator_2);
 		
 		JMenuItem mntmAnadirCliente = new JMenuItem("Añadir Cliente");
+		mntmAnadirCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AñadirCliente a = new AñadirCliente();
+				nuevoPanel(a);
+			}
+		});
 		mnNewMenu.add(mntmAnadirCliente);
 		
 		JSeparator separator_1 = new JSeparator();
