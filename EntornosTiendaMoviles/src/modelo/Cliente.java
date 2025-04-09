@@ -15,13 +15,21 @@ public class Cliente {
 	private int capacidad;
 	private String garantia;
 	private String tipo;
-
+	private String fecha;
+	
+	
 	private int idClienteV;
 	private int idVenta;
 	private int idArticuloV;
 	private int cantidadVendidas;
 	public int getIdCliente() {
 		return idCliente;
+	}
+	public String getFecha() {
+		return fecha;
+	}
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
 	public void setIdCliente(int idCliente) {
 		this.idCliente = idCliente;
