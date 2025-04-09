@@ -24,6 +24,8 @@ public class ModificarMovil extends JPanel {
 	private JTextField textFielddescripcion;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 
 	/**
 	 * Create the panel.
@@ -34,43 +36,43 @@ public class ModificarMovil extends JPanel {
 		JLabel lblNewLabel_7 = new JLabel("Capacidad");
 		lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_7.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_7.setBounds(100, 400, 150, 30);
+		lblNewLabel_7.setBounds(415, 415, 150, 30);
 		add(lblNewLabel_7);
 
 		JLabel lblNewLabel_8 = new JLabel("Garantía");
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_8.setBounds(100, 450, 150, 30);
+		lblNewLabel_8.setBounds(422, 476, 150, 30);
 		add(lblNewLabel_8);
 		
 		JLabel lblNewLabel_6 = new JLabel("Descripción");
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_6.setBounds(100, 350, 150, 30);
+		lblNewLabel_6.setBounds(415, 366, 150, 30);
 		add(lblNewLabel_6);
 
 		JLabel lblNewLabel_4 = new JLabel("Cantidad");
 		lblNewLabel_4.setFont(new Font("Stencil", Font.PLAIN, 15));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setBounds(100, 250, 150, 30);
+		lblNewLabel_4.setBounds(415, 266, 150, 30);
 		add(lblNewLabel_4);
 
 		JLabel lblNewLabel_5 = new JLabel("Color");
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_5.setBounds(100, 300, 150, 30);
+		lblNewLabel_5.setBounds(415, 316, 150, 30);
 		add(lblNewLabel_5);
 
 		JLabel lblNewLabel_3 = new JLabel("Precio");
 		lblNewLabel_3.setFont(new Font("Stencil", Font.PLAIN, 15));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(100, 200, 150, 30);
+		lblNewLabel_3.setBounds(415, 225, 150, 30);
 		add(lblNewLabel_3);
 
 		JLabel lblNewLabel_2 = new JLabel("Modelo");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(100, 150, 150, 30);
+		lblNewLabel_2.setBounds(415, 184, 150, 30);
 		add(lblNewLabel_2);
 
 		JLabel lblNewLabel = new JLabel("MODIFICAR Ó BORRAR");
@@ -78,25 +80,25 @@ public class ModificarMovil extends JPanel {
 		lblNewLabel.setForeground(new Color(255, 0, 0));
 		lblNewLabel.setFont(new Font("Britannic Bold", Font.PLAIN, 20));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(338, 39, 210, 43);
+		lblNewLabel.setBounds(508, 23, 210, 43);
 		add(lblNewLabel);
 
 		// Ajuste de tamaño y alineación uniforme para todos los JLabel
 		JLabel lblNewLabel_1 = new JLabel("Marca del Móvil");
 		lblNewLabel_1.setFont(new Font("Stencil", Font.PLAIN, 15));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(100, 100, 150, 30);
+		lblNewLabel_1.setBounds(415, 143, 150, 30);
 		add(lblNewLabel_1);
 		
 
 		JLabel lblNewLabel_9 = new JLabel("Estado");
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_9.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_9.setBounds(100, 500, 150, 30);
+		lblNewLabel_9.setBounds(415, 533, 150, 30);
 		add(lblNewLabel_9);
 
 		textFieldmarca = new JTextField();
-		textFieldmarca.setBounds(300, 100, 203, 20);
+		textFieldmarca.setBounds(615, 143, 203, 20);
 		add(textFieldmarca);
 		textFieldmarca.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -115,7 +117,7 @@ public class ModificarMovil extends JPanel {
 		textFieldmarca.setColumns(10);
 
 		textFieldmodelo = new JTextField();
-		textFieldmodelo.setBounds(300, 150, 203, 20);
+		textFieldmodelo.setBounds(615, 184, 203, 20);
 		add(textFieldmodelo);
 		textFieldmodelo.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -134,58 +136,80 @@ public class ModificarMovil extends JPanel {
 		textFieldmodelo.setColumns(10);
 
 		textFieldprecio = new JTextField();
-		textFieldprecio.setBounds(300, 200, 203, 20);
+		textFieldprecio.setBounds(615, 225, 203, 20);
 		add(textFieldprecio);
 		textFieldprecio.setColumns(10);
 
 		JSpinner spinnercantidad = new JSpinner();
-		spinnercantidad.setBounds(300, 250, 81, 20);
+		spinnercantidad.setBounds(615, 266, 81, 20);
 		add(spinnercantidad);
 		
 		JSpinner spinnercapacidad = new JSpinner();
-		spinnercapacidad.setBounds(300, 404, 81, 20);
+		spinnercapacidad.setBounds(615, 419, 81, 20);
 		add(spinnercapacidad);
 
 		textFieldcolor = new JTextField();
 		textFieldcolor.setColumns(10);
-		textFieldcolor.setBounds(300, 300, 203, 20);
+		textFieldcolor.setBounds(615, 316, 203, 20);
 		add(textFieldcolor);
 
 		textFielddescripcion = new JTextField();
 		textFielddescripcion.setColumns(10);
-		textFielddescripcion.setBounds(300, 350, 203, 20);
+		textFielddescripcion.setBounds(615, 366, 203, 20);
 		add(textFielddescripcion);
 
 		JRadioButton RadioButtonSI = new JRadioButton("SÍ");
 		RadioButtonSI.setFont(new Font("Stencil", Font.PLAIN, 16));
-		RadioButtonSI.setBounds(300, 450, 109, 23);
+		RadioButtonSI.setBounds(622, 476, 109, 23);
 		add(RadioButtonSI);
 
 		JRadioButton RadioButtonNO = new JRadioButton("NO");
 		RadioButtonNO.setFont(new Font("Stencil", Font.PLAIN, 16));
-		RadioButtonNO.setBounds(450, 450, 109, 23);
+		RadioButtonNO.setBounds(772, 476, 109, 23);
 		add(RadioButtonNO);
 
 
 		JRadioButton rdbtnNuevo = new JRadioButton("Nuevo");
 		rdbtnNuevo.setFont(new Font("Stencil", Font.PLAIN, 16));
-		rdbtnNuevo.setBounds(300, 500, 109, 23);
+		rdbtnNuevo.setBounds(615, 533, 109, 23);
 		add(rdbtnNuevo);
 
 		JRadioButton rdbtnRenovado = new JRadioButton("Renovado");
 		rdbtnRenovado.setFont(new Font("Stencil", Font.PLAIN, 16));
-		rdbtnRenovado.setBounds(450, 500, 109, 23);
+		rdbtnRenovado.setBounds(765, 533, 109, 23);
 		add(rdbtnRenovado);
 
 		JButton btnNewButton = new JButton("MODIFICAR");
 		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 25));
-		btnNewButton.setBounds(102, 617, 273, 43);
+		btnNewButton.setBounds(331, 608, 273, 43);
 		add(btnNewButton);
 
 		JButton btnBorrar = new JButton("BORRAR");
 		btnBorrar.setFont(new Font("Stencil", Font.PLAIN, 25));
-		btnBorrar.setBounds(434, 617, 273, 43);
+		btnBorrar.setBounds(663, 608, 273, 43);
 		add(btnBorrar);
+		
+		JLabel lblIdDeLa = new JLabel("Nombre de la ciudad a modificar");
+		lblIdDeLa.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblIdDeLa.setFont(new Font("Sitka Subheading", Font.BOLD, 16));
+		lblIdDeLa.setBounds(61, 96, 317, 14);
+		add(lblIdDeLa);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(388, 84, 206, 26);
+		add(textField_2);
+		
+		JLabel lblNombreDelPais = new JLabel("Nombre del país de la ciudad a modificar");
+		lblNombreDelPais.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNombreDelPais.setFont(new Font("Sitka Subheading", Font.BOLD, 16));
+		lblNombreDelPais.setBounds(604, 95, 317, 14);
+		add(lblNombreDelPais);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(930, 83, 206, 26);
+		add(textField_3);
 
 		
 	}
