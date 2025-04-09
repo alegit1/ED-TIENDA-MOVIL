@@ -2,11 +2,17 @@ package vista;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import controlador.BBDDmoviles;
+import modelo.Cliente;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -26,6 +32,9 @@ public class ModificarMovil extends JPanel {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField textmarcamodificar;
+	private JTextField textmodelomodificar;
+	private JTextField textFieldcapacidad;
 
 	/**
 	 * Create the panel.
@@ -143,10 +152,6 @@ public class ModificarMovil extends JPanel {
 		JSpinner spinnercantidad = new JSpinner();
 		spinnercantidad.setBounds(615, 266, 81, 20);
 		add(spinnercantidad);
-		
-		JSpinner spinnercapacidad = new JSpinner();
-		spinnercapacidad.setBounds(615, 419, 81, 20);
-		add(spinnercapacidad);
 
 		textFieldcolor = new JTextField();
 		textFieldcolor.setColumns(10);
@@ -169,48 +174,106 @@ public class ModificarMovil extends JPanel {
 		add(RadioButtonNO);
 
 
-		JRadioButton rdbtnNuevo = new JRadioButton("Nuevo");
-		rdbtnNuevo.setFont(new Font("Stencil", Font.PLAIN, 16));
-		rdbtnNuevo.setBounds(615, 533, 109, 23);
-		add(rdbtnNuevo);
+		JRadioButton rdbNuevo = new JRadioButton("Nuevo");
+		rdbNuevo.setFont(new Font("Stencil", Font.PLAIN, 16));
+		rdbNuevo.setBounds(615, 533, 109, 23);
+		add(rdbNuevo);
 
-		JRadioButton rdbtnRenovado = new JRadioButton("Renovado");
-		rdbtnRenovado.setFont(new Font("Stencil", Font.PLAIN, 16));
-		rdbtnRenovado.setBounds(765, 533, 109, 23);
-		add(rdbtnRenovado);
-
-		JButton btnNewButton = new JButton("MODIFICAR");
-		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 25));
-		btnNewButton.setBounds(331, 608, 273, 43);
-		add(btnNewButton);
+		JRadioButton rdbRenovado = new JRadioButton("Renovado");
+		rdbRenovado.setFont(new Font("Stencil", Font.PLAIN, 16));
+		rdbRenovado.setBounds(765, 533, 109, 23);
+		add(rdbRenovado);
 
 		JButton btnBorrar = new JButton("BORRAR");
 		btnBorrar.setFont(new Font("Stencil", Font.PLAIN, 25));
 		btnBorrar.setBounds(663, 608, 273, 43);
 		add(btnBorrar);
+		//hay que terminar la conexion entre los botones y hay que retocar;
+		 /**
+		JButton btnNewButton = new JButton("MODIFICAR");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean correcto = false;
+				Cliente c = new Cliente();
+				c.setMarca(textFieldmarca.getText());
+				c.setModelo(textFieldmodelo.getText());
+				c.setPrecio(Float.parseFloat(textFieldprecio.getText()));
+				c.setColor(textFieldcolor.getText());
+				c.setDescripcion(textFielddescripcion.getText());
+				c.setCapacidad(Integer.parseInt(textFieldcapacidad.getText()));
+				c.setCantidad((Integer) spinnercantidad.getValue());
+
+				// Comprobar la selección de los radio buttons "Garantía"
+				if (RadioButtonSI.isSelected()) {
+					c.setGarantia("si"); // Suponiendo que Cliente tiene un atributo booleano "garantia"
+				} else if (RadioButtonNO.isSelected()) {
+					c.setGarantia("no");
+				}
+
+				// Comprobar la selección de los radio buttons "Estado"
+				if (rdbtnNuevo.isSelected()) {
+					c.setTipo("Nuevo");
+				} else if (rdbtnRenovado.isSelected()) {
+					c.setTipo("Renovado");
+				}
+
+				int valor = JOptionPane.showConfirmDialog(null, "¿Desea insertar un nuevo Movil?");
+				if (valor == JOptionPane.OK_OPTION) {
+					BBDDmoviles b = new BBDDmoviles();
+					correcto = b.insertaDatos(c);
+					if (correcto) {
+						JOptionPane.showMessageDialog(null, "Insertado Correctamente");
+					} else {
+						JOptionPane.showMessageDialog(null, "Error en insertar el Movil");
+					}
+				}
+				textFieldmarca.setText("");
+				textFieldmodelo.setText("");
+				textFieldcolor.setText("");
+				textFielddescripcion.setText("");
+				spinnercantidad.setValue(0);
+				textFieldprecio.setText("");
+				textFieldcapacidad.setText("");
+				// Limpiar las selecciones de los radio buttons
+		        groupGarantia.clearSelection(); // Desmarcar el grupo de "Garantía"
+		        groupEstado.clearSelection(); // Desmarcar el grupo de "Estado"
+		        
 		
-		JLabel lblIdDeLa = new JLabel("Nombre de la ciudad a modificar");
+		        * 
+		        */
+		});
+		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 25));
+		btnNewButton.setBounds(335, 608, 273, 43);
+		add(btnNewButton);
+		
+		JLabel lblIdDeLa = new JLabel("marca del movil a modificar modificar");
 		lblIdDeLa.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblIdDeLa.setFont(new Font("Sitka Subheading", Font.BOLD, 16));
-		lblIdDeLa.setBounds(61, 96, 317, 14);
+		lblIdDeLa.setBounds(71, 100, 317, 14);
 		add(lblIdDeLa);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(388, 84, 206, 26);
-		add(textField_2);
+		textmarcamodificar = new JTextField();
+		textmarcamodificar.setColumns(10);
+		textmarcamodificar.setBounds(398, 88, 206, 26);
+		add(textmarcamodificar);
 		
-		JLabel lblNombreDelPais = new JLabel("Nombre del país de la ciudad a modificar");
+		JLabel lblNombreDelPais = new JLabel("modelo del movil a modificar");
 		lblNombreDelPais.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNombreDelPais.setFont(new Font("Sitka Subheading", Font.BOLD, 16));
-		lblNombreDelPais.setBounds(604, 95, 317, 14);
+		lblNombreDelPais.setBounds(614, 99, 317, 14);
 		add(lblNombreDelPais);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(930, 83, 206, 26);
-		add(textField_3);
+		textmodelomodificar = new JTextField();
+		textmodelomodificar.setColumns(10);
+		textmodelomodificar.setBounds(940, 87, 206, 26);
+		add(textmodelomodificar);
+		
+		textFieldcapacidad = new JTextField();
+		textFieldcapacidad.setColumns(10);
+		textFieldcapacidad.setBounds(615, 419, 203, 20);
+		add(textFieldcapacidad);
 
+	}
 		
 	}
-}
+
