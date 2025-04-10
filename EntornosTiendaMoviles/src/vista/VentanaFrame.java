@@ -86,6 +86,14 @@ public class VentanaFrame extends JFrame {
 		mnNewMenu.add(separator_1);
 		
 		JMenuItem mntmRealizarVenta = new JMenuItem("Realizar Venta");
+		mntmRealizarVenta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				PanelVenta p = new PanelVenta();
+				nuevoPanel(p);
+				
+			}
+		});
 		mnNewMenu.add(mntmRealizarVenta);
 		
 		JSeparator separator = new JSeparator();

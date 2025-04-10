@@ -16,7 +16,14 @@ public class Cliente {
 	private String garantia;
 	private String tipo;
 	private String fecha;
+	private String correo;
 	
+	public String getCorreo() {
+		return correo;
+	}
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
 	
 	private int idClienteV;
 	private int idVenta;
