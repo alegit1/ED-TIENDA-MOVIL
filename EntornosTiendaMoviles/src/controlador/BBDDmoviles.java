@@ -20,13 +20,23 @@ import modelo.Cliente;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 
-
+/**
+ * Clase que gestiona la conexión y operaciones con la base de datos del sistema
+ * de gestión de ventas de móviles. Permite insertar y consultar datos, procesar ventas y
+ * enviar correos con boletas.
+ * @author rocki
+ */
 public class BBDDmoviles {
 
 	private static final String x = "jdbc:mysql://localhost/bd_telefono";
 	private static final String xx = "root";
 	private static final String xxx = "";
 
+	/**
+	 * Inserta un nuevo móvil en la base de datos.
+	 *  @param tf Objeto Cliente con los datos del móvil.
+	 *  @return true si la inserción fue exitosa, false si ocurrió un error.
+	 */
 	public boolean insertaDatos(Cliente tf) {
 		try {
 			// Establecer la conexión a la base de datos
@@ -49,7 +59,12 @@ public class BBDDmoviles {
 		return false;
 
 	}
-
+	
+	/**
+	 * Inserta un nuevo cliente en la base de datos.
+	 *  @param cl Objeto Cliente con los datos del cliente.
+	 *  @return true si la inserción fue exitosa, false si ocurrió un error.
+	 */
 	public boolean insertaCliente(Cliente cl) {
 		try {
 			// Establecer la conexión a la base de datos
@@ -68,7 +83,11 @@ public class BBDDmoviles {
 		return false;
 
 	}
-
+	
+	/**
+	 * Consulta las marcas de móviles disponibles.
+	 * @return Lista de marcas únicas de móviles.
+	 */
 	public ArrayList<String> consultaCMBporMarca() {
 		ArrayList<String> arrPaisCodigo = new ArrayList<>();
 		Connection conexion;
@@ -89,7 +108,11 @@ public class BBDDmoviles {
 		}
 
 	}
-
+	
+	/**
+	 * Consulta los modelos de móviles disponibles.
+	 * @return Lista de modelos únicos de móviles.
+	 */
 	public ArrayList<String> consultaCMBporModelo() {
 		ArrayList<String> arrPaisCodigo = new ArrayList<>();
 		Connection conexion;
@@ -110,7 +133,12 @@ public class BBDDmoviles {
 		}
 
 	}
-
+	
+	/**
+	 * Obtener modelos disponibles para marca.
+	 * @param marcaseleccionada la marca seleccionada
+	 * @return la lista de modelos de este marca
+	 */
 	public ArrayList<String> consultaModeloPorMarca(String marcaseleccionada) {
 		ArrayList<String> modelo = new ArrayList<>();
 		Connection conexion;
@@ -130,7 +158,12 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-
+	
+	/**
+	 * Consulta la información completa de los móviles de una marca.
+	 * @param marca la marca a buscar 
+	 * @return List de objetos cliente, que contienen datos de los móviles
+	 */
 	public ArrayList<Cliente> consultaGeneralPorMarca(String marca) {
 		ArrayList<Cliente> arrTodo = new ArrayList<>();
 
@@ -161,7 +194,12 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-
+	
+	/**
+	 * Consultar información completa de los móviles de un modelo.
+	 * @param modelo el modelo para buscar
+	 * @return List de objetos cliente, que contienen información sobre el móvil
+	 */
 	public ArrayList<Cliente> consultaGeneralPorModelo(String modelo) {
 		ArrayList<Cliente> arrTodo = new ArrayList<>();
 
@@ -192,7 +230,13 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-
+	
+	/**
+	 * Consultar las ventas realizadas por el cliente en la fecha mencionada
+	 * @param dni el DNI del cliente
+	 * @param fecha la fecha o parte de ella (LIKE formato SQL)
+	 * @return List de objetos cliente con la información sobre ventas
+	 */
 	public ArrayList<Cliente> consultaGeneralPorDate(String dni, String fecha) {
 		ArrayList<Cliente> arrTodo = new ArrayList<>();
 
@@ -223,7 +267,13 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-
+	
+	/**
+	 * Procesa una venta Verificar si existe el stock necesario y si efectivamente el cliente es quien dice 
+	 * ser.
+	 * @param venta. Objeto Cliente con la información de la venta.
+	 * @return. true si la venta fue realizada exitosamente, false si es lo contrario.
+	 */
 	public boolean procesarVenta(Cliente venta) {
 		// Controlamos que la venta sea mayor a 0
 
@@ -265,6 +315,11 @@ public class BBDDmoviles {
 		return false;
 	}
 
+	/**
+	 * Genera una boleta de venta y la envía por correo.
+	 * @param venta. Objeto Cliente con la información necesaria para enviar la boleta.
+	 * @return. true si el correo fue enviado exitosamente, false es lo contrario.
+	 */
 	public boolean correo(Cliente venta) {
 		try (Connection conexion = DriverManager.getConnection(x, xx, xxx);
 				Statement consulta = conexion.createStatement()) {
@@ -306,7 +361,12 @@ public class BBDDmoviles {
 
 	}
 
-	///// Método para enviar correo con la boleta
+	/**
+	 * Enviar correo con el contenido de la boleta.
+	 * @param destinatario
+	 * @param asunto
+	 * @param mensaje
+	 */
 	public void enviarCorreoBoleta(String destinatario, String asunto, String mensaje) {
 
 		// Configuración del servidor SMTP de Gmail
@@ -345,6 +405,12 @@ public class BBDDmoviles {
 		}
 	}
 
+	/**
+
+	Verificar que un cliente con el id pasado exista en la base de datos.
+	* @param idCliente
+	* @return boolean dependiendo si encuentre al cliente o no
+	*/
 	public boolean existeCliente(int idCliente) {
 		boolean existe = false;
 		try (Connection conexion = DriverManager.getConnection(x, xx, xxx);
@@ -363,6 +429,11 @@ public class BBDDmoviles {
 		return existe;
 	}
 
+	/**
+	 * Consulta datos del cliente por su DNI (coincidencia parcial).
+	 *  @param dni Parte o totalidad del DNI a buscar.
+	 *  @return Lista de clientes que coincidan con el DNI proporcionado.
+	 */
 	public ArrayList<Cliente> consultaGeneralPorDNI(String dni) {
 		ArrayList<Cliente> arrTodo = new ArrayList<>();
 		Connection conexion;

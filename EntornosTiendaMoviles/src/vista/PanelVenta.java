@@ -26,6 +26,14 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 
+/**
+ * Clase PanelVenta que representa la interfaz gráfica del panel de ventas
+ * de dispositivos móviles. Permite seleccionar marca y modelo, realizar ventas,
+ * enviar correos, buscar clientes por DNI y mostrar artículos y clientes.
+ * Hereda de JPanel.
+ * @author rocki
+ */
+
 public class PanelVenta extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -257,6 +265,10 @@ public class PanelVenta extends JPanel {
 		cargaComboModeloCompletos();
 	}
 	
+	
+	/**
+	 * Realiza la búsqueda de un cliente por DNI y carga los resultados en la tabla de clientes.
+	 */
 	public void buscarCliente() {
 	    String texto = textFieldDNI.getText().trim();
 	    BBDDmoviles bd = new BBDDmoviles();
@@ -264,6 +276,9 @@ public class PanelVenta extends JPanel {
 	    cargarTablaClientes(); // Carga los datos en la tabla de clientes
 	}
 
+	/**
+	 *Carga todas las marcas disponibles en el comboBox de marcas. 
+	 */
 	public void cargaComboMarcaCompletos() {
 		ArrayList<String> arrStr = new ArrayList<>();
 		BBDDmoviles bd = new BBDDmoviles();
@@ -272,7 +287,10 @@ public class PanelVenta extends JPanel {
 			comboBoxMarca.addItem(st);
 		}
 	}
-
+	
+	/**
+	 * Carga todos los modelos disponibles en el comboBox de modelos.
+	 */
 	public void cargaComboModeloCompletos() {
 		ArrayList<String> arrStr = new ArrayList<>();
 		BBDDmoviles bd = new BBDDmoviles();
@@ -281,6 +299,10 @@ public class PanelVenta extends JPanel {
 			comboBoxModelo.addItem(st);
 		}
 	}
+	/**
+	 * Carga en la tabla de celulares la información de los artículos móviles
+	 * consultados por marca o modelo.
+	 */
 
 	public void cargarTabla() {
 		modeloTabla.setRowCount(0);
@@ -292,7 +314,9 @@ public class PanelVenta extends JPanel {
 			}
 		}
 	}
-
+	/**
+	 * Carga en la tabla de clientes los datos del cliente encontrado por DNI
+	 */
 	public void cargarTablaClientes() {
 	    modeloTablaClientes.setRowCount(0); // Limpiar la tabla antes de cargar nuevos datos
 	    if (misClientes != null) {

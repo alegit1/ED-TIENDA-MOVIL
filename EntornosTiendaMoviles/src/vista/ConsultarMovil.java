@@ -20,6 +20,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ActionEvent;
 
+
+/**
+ *ConsultarMovil que muestra un panel de interfaz gráfica para consultar los móviles disponibles en la base 
+ *de datos.
+ *En el panel, el usuario podra filtrar por marca y modelo y ver los resultados en una tabla.
+ * @author rocki
+ */
 public class ConsultarMovil extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -133,7 +140,9 @@ public class ConsultarMovil extends JPanel {
 
 	}
 
-	///
+	/**
+	 * Carga las marcas disponibles en la base de datos en el comboBoxMarca.
+	 */
 	public void cargaComboMarcaCompletos() {
 		ArrayList<String> arrStr = new ArrayList<>();
 		BBDDmoviles bd = new BBDDmoviles();
@@ -142,8 +151,10 @@ public class ConsultarMovil extends JPanel {
 			comboBoxMarca.addItem(st); // Añadimos cada marca al ComboBox de marcas
 		}
 	}
-	///
-
+	
+	/**
+	 * Carga los modelos disponibles en la base de datos en el comboBoxModelo.
+	 */
 	public void cargaComboModeloCompletos() {
 		ArrayList<String> arrStr = new ArrayList<>();
 		BBDDmoviles bd = new BBDDmoviles();
@@ -153,6 +164,9 @@ public class ConsultarMovil extends JPanel {
 		}
 	}
 
+	/**
+	 * Llena la tabla con los datos de los móviles almacenados en misClientes.
+	 */
 	public void cargarTabla() {
 
 		modeloTabla.setRowCount(0);
