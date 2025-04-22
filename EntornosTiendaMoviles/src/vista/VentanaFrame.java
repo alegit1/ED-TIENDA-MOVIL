@@ -56,6 +56,13 @@ public class VentanaFrame extends JFrame {
 		mnNewMenu.add(separator_5);
 		
 		JMenuItem mntmConsultar = new JMenuItem("Consultar Móvil");
+		mntmConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				ConsultarMovil c=new ConsultarMovil();
+				nuevoPanel(c);
+			}
+		});
 		mnNewMenu.add(mntmConsultar);
 		
 		JSeparator separator_4 = new JSeparator();
