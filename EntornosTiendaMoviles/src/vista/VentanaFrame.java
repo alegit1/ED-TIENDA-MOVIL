@@ -100,6 +100,13 @@ public class VentanaFrame extends JFrame {
 		mnNewMenu.add(separator);
 		
 		JMenuItem mntmInfoCompra = new JMenuItem("Información Compra");
+		mntmInfoCompra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				ConsultarInformacionVenta c = new ConsultarInformacionVenta();
+				nuevoPanel(c);
+			}
+		});
 		mnNewMenu.add(mntmInfoCompra);
 		
 		JMenu mnNewMenu_1 = new JMenu("|");

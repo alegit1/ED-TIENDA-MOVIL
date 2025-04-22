@@ -462,5 +462,39 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
+	public ArrayList<Cliente> getVentasByDniAndFecha(String dni, String fecha) {
+	    ArrayList<Cliente> ventas = new ArrayList<>();
+
+
+	    try {
+	    		Connection conn = DriverManager.getConnection(x, xx, xxx);
+	         PreparedStatement pstmt = conn.prepareStatement(
+	        		 "SELECT moviles.marca, idVenta, moviles.modelo, ventas.cantidad, ventas.fecha, dni " +
+	                 "FROM ventas, moviles, clientes " +
+	                 "WHERE ventas.idArticulo = moviles.idArticulo " +
+	                 "AND ventas.idCliente = clientes.idCliente " + 
+	                 "AND dni LIKE ? AND fecha LIKE ?");
+
+	        pstmt.setString(1, "%" + dni + "%");
+	        pstmt.setString(2, "%" + fecha + "%");
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                Cliente cliente = new Cliente();
+	                cliente.setDni(rs.getString("dni"));
+	                cliente.setIdVenta(rs.getInt("idVenta"));
+	                cliente.setModelo(rs.getString("modelo"));
+	                cliente.setCantidadVendidas(rs.getInt("cantidad"));
+	                //cliente.setFecha(rs.getString("fecha"));
+	                ventas.add(cliente);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return ventas;
+	}
 
 }
