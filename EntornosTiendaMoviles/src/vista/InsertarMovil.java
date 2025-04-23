@@ -19,6 +19,15 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+
+/**
+ * Clase que representa un panel para insertar nuevos móviles en el sistema.
+ * Proporciona una interfaz gráfica con campos para introducir los datos del móvil
+ * y botones para confirmar la inserción.
+ * 
+ * @author lazaro y @author rocki
+ * @version 1.0
+ */
 public class InsertarMovil extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -30,8 +39,10 @@ public class InsertarMovil extends JPanel {
 	private JTextField textFieldcapacidad;
 
 	/**
-	 * Create the panel.
-	 */
+     * Constructor que inicializa los componentes de la interfaz gráfica.
+     * Crea y organiza los campos de texto, etiquetas, botones de radio
+     * y el botón de inserción.
+     */
 	public InsertarMovil() {
 		setLayout(null);
 
@@ -159,6 +170,13 @@ public class InsertarMovil extends JPanel {
 		groupEstado.add(rdbtnNuevo);
 		groupEstado.add(rdbtnRenovado);
 
+		/**
+         * Método que se ejecuta al hacer clic en el botón INSERTAR.
+         * Recoge los datos de los campos, valida las selecciones de radio botones,
+         * muestra un diálogo de confirmación y realiza la inserción en la base de datos.
+         * 
+         * @param e Evento de acción que desencadena el método
+         */
 		JButton btnNewButton = new JButton("INSERTAR");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
