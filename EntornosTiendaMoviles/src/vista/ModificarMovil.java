@@ -13,267 +13,351 @@ import modelo.Cliente;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.awt.Color;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 public class ModificarMovil extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textFieldmarca;
-	private JTextField textFieldmodelo;
-	private JTextField textFieldprecio;
-	private JTextField textFieldcolor;
-	private JTextField textFielddescripcion;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textmarcamodificar;
-	private JTextField textmodelomodificar;
-	private JTextField textFieldcapacidad;
+	private JTextField textFieldMarca;
+	private JTextField textFieldModelo;
+	private JTextField textFieldPrecio2;
+	private JTextField textFieldColor2;
+	private JTextField textFieldDescripcion2;
+	private JTextField textFieldCapacidad2;
+	private static final String DB_URL = "jdbc:mysql://localhost/bd_telefono";
+	private static final String DB_USER = "root";
+	private static final String DB_PASSWORD = "";
+	private ButtonGroup gRadioGarantia;
+	private ButtonGroup gRadioEstado;
+	private JRadioButton radioButtonSi2;
+	private JRadioButton radioButtonNo2;
+	private JRadioButton radioButtonNuevo2;
+	private JRadioButton radioButtonRenovado2;
+	private JSpinner spinnerCantidad2;
 
-	/**
-	 * Create the panel.
-	 */
+	private static final String x = "jdbc:mysql://localhost/bd_telefono";
+	private static final String xx = "root";
+	private static final String xxx = "";
+	private JTextField textField_modelo2;
+	private JTextField textField_Marca2;
+	private JLabel lblColor_1;
+	private JTextField textFieldColor1;
+	private JButton btnNewButton;
+
 	public ModificarMovil() {
+		gRadioGarantia = new ButtonGroup();
+		gRadioEstado = new ButtonGroup();
+
 		setLayout(null);
 
-		JLabel lblNewLabel_7 = new JLabel("Capacidad");
-		lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_7.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_7.setBounds(415, 415, 150, 30);
-		add(lblNewLabel_7);
+		JLabel lblTitulo = new JLabel("MODIFICAR MÓVIL");
+		lblTitulo.setForeground(Color.RED);
+		lblTitulo.setFont(new Font("Britannic Bold", Font.PLAIN, 20));
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitulo.setBounds(353, 22, 366, 43);
+		add(lblTitulo);
 
-		JLabel lblNewLabel_8 = new JLabel("Garantía");
-		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_8.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_8.setBounds(422, 476, 150, 30);
-		add(lblNewLabel_8);
-		
-		JLabel lblNewLabel_6 = new JLabel("Descripción");
-		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_6.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_6.setBounds(415, 366, 150, 30);
-		add(lblNewLabel_6);
+		JLabel lblMarca = new JLabel("Marca del Móvil");
+		lblMarca.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblMarca.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMarca.setBounds(10, 86, 150, 30);
+		add(lblMarca);
 
-		JLabel lblNewLabel_4 = new JLabel("Cantidad");
-		lblNewLabel_4.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setBounds(415, 266, 150, 30);
-		add(lblNewLabel_4);
+		textFieldMarca = new JTextField();
+		textFieldMarca.setBounds(170, 90, 203, 20);
+		add(textFieldMarca);
+		textFieldMarca.setColumns(10);
 
-		JLabel lblNewLabel_5 = new JLabel("Color");
-		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_5.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_5.setBounds(415, 316, 150, 30);
-		add(lblNewLabel_5);
+		JLabel lblModelo = new JLabel("Modelo");
+		lblModelo.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblModelo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblModelo.setBounds(383, 86, 150, 30);
+		add(lblModelo);
 
-		JLabel lblNewLabel_3 = new JLabel("Precio");
-		lblNewLabel_3.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(415, 225, 150, 30);
-		add(lblNewLabel_3);
+		textFieldModelo = new JTextField();
+		textFieldModelo.setBounds(543, 90, 203, 20);
+		add(textFieldModelo);
+		textFieldModelo.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel("Modelo");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(415, 184, 150, 30);
-		add(lblNewLabel_2);
+		JLabel lblPrecio = new JLabel("Precio");
+		lblPrecio.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblPrecio.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPrecio.setBounds(318, 192, 150, 30);
+		add(lblPrecio);
 
-		JLabel lblNewLabel = new JLabel("MODIFICAR Ó BORRAR");
-		lblNewLabel.setBackground(new Color(255, 0, 0));
-		lblNewLabel.setForeground(new Color(255, 0, 0));
-		lblNewLabel.setFont(new Font("Britannic Bold", Font.PLAIN, 20));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(508, 23, 210, 43);
-		add(lblNewLabel);
+		textFieldPrecio2 = new JTextField();
+		textFieldPrecio2.setBounds(518, 196, 203, 20);
+		add(textFieldPrecio2);
+		textFieldPrecio2.setColumns(10);
 
-		// Ajuste de tamaño y alineación uniforme para todos los JLabel
-		JLabel lblNewLabel_1 = new JLabel("Marca del Móvil");
-		lblNewLabel_1.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(415, 143, 150, 30);
-		add(lblNewLabel_1);
-		
+		JLabel lblCantidad = new JLabel("Cantidad");
+		lblCantidad.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblCantidad.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCantidad.setBounds(318, 232, 150, 30);
+		add(lblCantidad);
 
-		JLabel lblNewLabel_9 = new JLabel("Estado");
-		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_9.setFont(new Font("Stencil", Font.PLAIN, 15));
-		lblNewLabel_9.setBounds(415, 533, 150, 30);
-		add(lblNewLabel_9);
+		spinnerCantidad2 = new JSpinner();
+		spinnerCantidad2.setBounds(518, 236, 81, 20);
+		add(spinnerCantidad2);
 
-		textFieldmarca = new JTextField();
-		textFieldmarca.setBounds(615, 143, 203, 20);
-		add(textFieldmarca);
-		textFieldmarca.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-            }
+		JLabel lblColor = new JLabel("Color");
+		lblColor.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblColor.setHorizontalAlignment(SwingConstants.CENTER);
+		lblColor.setBounds(318, 272, 150, 30);
+		add(lblColor);
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-            }
+		textFieldColor2 = new JTextField();
+		textFieldColor2.setBounds(518, 276, 203, 20);
+		add(textFieldColor2);
+		textFieldColor2.setColumns(10);
 
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // No se usa con JTextField
-            }
-        });
-		textFieldmarca.setColumns(10);
+		JLabel lblDescripcion = new JLabel("Descripción");
+		lblDescripcion.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblDescripcion.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDescripcion.setBounds(318, 312, 150, 30);
+		add(lblDescripcion);
 
-		textFieldmodelo = new JTextField();
-		textFieldmodelo.setBounds(615, 184, 203, 20);
-		add(textFieldmodelo);
-		textFieldmodelo.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-            }
+		textFieldDescripcion2 = new JTextField();
+		textFieldDescripcion2.setBounds(518, 316, 203, 20);
+		add(textFieldDescripcion2);
+		textFieldDescripcion2.setColumns(10);
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-            }
+		JLabel lblCapacidad = new JLabel("Capacidad");
+		lblCapacidad.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblCapacidad.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCapacidad.setBounds(318, 352, 150, 30);
+		add(lblCapacidad);
 
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // No se usa con JTextField
-            }
-        });
-		textFieldmodelo.setColumns(10);
+		textFieldCapacidad2 = new JTextField();
+		textFieldCapacidad2.setBounds(518, 356, 203, 20);
+		add(textFieldCapacidad2);
+		textFieldCapacidad2.setColumns(10);
 
-		textFieldprecio = new JTextField();
-		textFieldprecio.setBounds(615, 225, 203, 20);
-		add(textFieldprecio);
-		textFieldprecio.setColumns(10);
+		JLabel lblGarantia = new JLabel("Garantía");
+		lblGarantia.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblGarantia.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGarantia.setBounds(318, 392, 150, 30);
+		add(lblGarantia);
 
-		JSpinner spinnercantidad = new JSpinner();
-		spinnercantidad.setBounds(615, 266, 81, 20);
-		add(spinnercantidad);
+		radioButtonSi2 = new JRadioButton("SÍ");
+		radioButtonSi2.setFont(new Font("Stencil", Font.PLAIN, 16));
+		radioButtonSi2.setBounds(525, 396, 109, 23);
+		radioButtonSi2.setSelected(true);
+		add(radioButtonSi2);
+		gRadioGarantia.add(radioButtonSi2);
 
-		textFieldcolor = new JTextField();
-		textFieldcolor.setColumns(10);
-		textFieldcolor.setBounds(615, 316, 203, 20);
-		add(textFieldcolor);
+		radioButtonNo2 = new JRadioButton("NO");
+		radioButtonNo2.setFont(new Font("Stencil", Font.PLAIN, 16));
+		radioButtonNo2.setBounds(675, 396, 109, 23);
+		add(radioButtonNo2);
+		gRadioGarantia.add(radioButtonNo2);
 
-		textFielddescripcion = new JTextField();
-		textFielddescripcion.setColumns(10);
-		textFielddescripcion.setBounds(615, 366, 203, 20);
-		add(textFielddescripcion);
+		JLabel lblEstado = new JLabel("Estado");
+		lblEstado.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblEstado.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEstado.setBounds(318, 432, 150, 30);
+		add(lblEstado);
 
-		JRadioButton RadioButtonSI = new JRadioButton("SÍ");
-		RadioButtonSI.setFont(new Font("Stencil", Font.PLAIN, 16));
-		RadioButtonSI.setBounds(622, 476, 109, 23);
-		add(RadioButtonSI);
+		radioButtonNuevo2 = new JRadioButton("Nuevo");
+		radioButtonNuevo2.setFont(new Font("Stencil", Font.PLAIN, 16));
+		radioButtonNuevo2.setBounds(518, 435, 109, 23);
+		radioButtonNuevo2.setSelected(true);
+		add(radioButtonNuevo2);
+		gRadioEstado.add(radioButtonNuevo2);
 
-		JRadioButton RadioButtonNO = new JRadioButton("NO");
-		RadioButtonNO.setFont(new Font("Stencil", Font.PLAIN, 16));
-		RadioButtonNO.setBounds(772, 476, 109, 23);
-		add(RadioButtonNO);
+		radioButtonRenovado2 = new JRadioButton("Renovado");
+		radioButtonRenovado2.setFont(new Font("Stencil", Font.PLAIN, 16));
+		radioButtonRenovado2.setBounds(647, 435, 137, 23);
+		add(radioButtonRenovado2);
+		gRadioEstado.add(radioButtonRenovado2);
 
-
-		JRadioButton rdbNuevo = new JRadioButton("Nuevo");
-		rdbNuevo.setFont(new Font("Stencil", Font.PLAIN, 16));
-		rdbNuevo.setBounds(615, 533, 109, 23);
-		add(rdbNuevo);
-
-		JRadioButton rdbRenovado = new JRadioButton("Renovado");
-		rdbRenovado.setFont(new Font("Stencil", Font.PLAIN, 16));
-		rdbRenovado.setBounds(765, 533, 109, 23);
-		add(rdbRenovado);
-
-		JButton btnBorrar = new JButton("BORRAR");
-		btnBorrar.setFont(new Font("Stencil", Font.PLAIN, 25));
-		btnBorrar.setBounds(663, 608, 273, 43);
-		add(btnBorrar);
-		//hay que terminar la conexion entre los botones y hay que retocar;
-		 /**
-		JButton btnNewButton = new JButton("MODIFICAR");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnBorrar_1 = new JButton("BORRAR");
+		btnBorrar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean correcto = false;
+				Boolean acierto = false;
+                BBDDmoviles b = new BBDDmoviles();
+                Cliente cl = new Cliente();
+				cl.setMarca(textField_Marca2.getText());
+				cl.setModelo(textField_modelo2.getText());
+				cl.setPrecio(Float.parseFloat(textFieldPrecio2.getText()));
+				cl.setColor(textFieldColor2.getText());
+				cl.setDescripcion(textFieldDescripcion2.getText());
+				cl.setCapacidad(Integer.parseInt(textFieldCapacidad2.getText()));
+				cl.setCantidad((Integer) spinnerCantidad2.getValue());
+				
+                int valor = JOptionPane.showConfirmDialog(null, "¿Seguro de eliminar la ciudad seleccionada?");
+                if (valor == JOptionPane.OK_OPTION) {
+                    acierto = b.borrarMovil(cl);
+                }
+                if (acierto) {
+                    JOptionPane.showMessageDialog(null, "Ciudad eliminada.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar la ciudad seleccionada.");
+                }
+                limpiarcampos();
+			}
+		});
+		btnBorrar_1.setFont(new Font("Stencil", Font.PLAIN, 25));
+		btnBorrar_1.setBounds(123, 482, 273, 43);
+		add(btnBorrar_1);
+
+		JLabel lblModelo_2 = new JLabel("Modelo");
+		lblModelo_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblModelo_2.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblModelo_2.setBounds(318, 154, 150, 30);
+		add(lblModelo_2);
+
+		textField_modelo2 = new JTextField();
+		textField_modelo2.setColumns(10);
+		textField_modelo2.setBounds(516, 154, 203, 20);
+		add(textField_modelo2);
+
+		JLabel lblMarca_2 = new JLabel("Marca del Móvil");
+		lblMarca_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMarca_2.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblMarca_2.setBounds(318, 121, 150, 30);
+		add(lblMarca_2);
+
+		textField_Marca2 = new JTextField();
+		textField_Marca2.setColumns(10);
+		textField_Marca2.setBounds(518, 125, 203, 20);
+		add(textField_Marca2);
+
+		lblColor_1 = new JLabel("Color");
+		lblColor_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblColor_1.setFont(new Font("Stencil", Font.PLAIN, 15));
+		lblColor_1.setBounds(732, 86, 109, 30);
+		add(lblColor_1);
+
+		textFieldColor1 = new JTextField();
+		textFieldColor1.setColumns(10);
+		textFieldColor1.setBounds(851, 90, 98, 20);
+		add(textFieldColor1);
+
+		JButton btnModificar = new JButton("MODIFICAR");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Boolean acierto = false;
+				BBDDmoviles bd = new BBDDmoviles();
 				Cliente c = new Cliente();
-				c.setMarca(textFieldmarca.getText());
-				c.setModelo(textFieldmodelo.getText());
-				c.setPrecio(Float.parseFloat(textFieldprecio.getText()));
-				c.setColor(textFieldcolor.getText());
-				c.setDescripcion(textFielddescripcion.getText());
-				c.setCapacidad(Integer.parseInt(textFieldcapacidad.getText()));
-				c.setCantidad((Integer) spinnercantidad.getValue());
+				c.setMarca(textField_Marca2.getText());
+				c.setModelo(textField_modelo2.getText());
+				c.setPrecio(Float.parseFloat(textFieldPrecio2.getText()));
+				c.setColor(textFieldColor2.getText());
+				c.setDescripcion(textFieldDescripcion2.getText());
+				c.setCapacidad(Integer.parseInt(textFieldCapacidad2.getText()));
+				c.setCantidad((Integer) spinnerCantidad2.getValue());
 
 				// Comprobar la selección de los radio buttons "Garantía"
-				if (RadioButtonSI.isSelected()) {
+				if (radioButtonSi2.isSelected()) {
 					c.setGarantia("si"); // Suponiendo que Cliente tiene un atributo booleano "garantia"
-				} else if (RadioButtonNO.isSelected()) {
+				} else if (radioButtonNo2.isSelected()) {
 					c.setGarantia("no");
 				}
 
 				// Comprobar la selección de los radio buttons "Estado"
-				if (rdbtnNuevo.isSelected()) {
+				if (radioButtonNuevo2.isSelected()) {
 					c.setTipo("Nuevo");
-				} else if (rdbtnRenovado.isSelected()) {
+				} else if (radioButtonRenovado2.isSelected()) {
 					c.setTipo("Renovado");
 				}
 
-				int valor = JOptionPane.showConfirmDialog(null, "¿Desea insertar un nuevo Movil?");
+
+				int valor = JOptionPane.showConfirmDialog(null, "¿Desea modificar los datos de la ciudad?");
 				if (valor == JOptionPane.OK_OPTION) {
-					BBDDmoviles b = new BBDDmoviles();
-					correcto = b.insertaDatos(c);
-					if (correcto) {
-						JOptionPane.showMessageDialog(null, "Insertado Correctamente");
-					} else {
-						JOptionPane.showMessageDialog(null, "Error en insertar el Movil");
-					}
+					acierto = bd.modificaDatosMovil(c);
 				}
-				textFieldmarca.setText("");
-				textFieldmodelo.setText("");
-				textFieldcolor.setText("");
-				textFielddescripcion.setText("");
-				spinnercantidad.setValue(0);
-				textFieldprecio.setText("");
-				textFieldcapacidad.setText("");
-				// Limpiar las selecciones de los radio buttons
-		        groupGarantia.clearSelection(); // Desmarcar el grupo de "Garantía"
-		        groupEstado.clearSelection(); // Desmarcar el grupo de "Estado"
-		        
-		
-		        * 
-		        */
+
+				if (acierto) {
+					JOptionPane.showMessageDialog(null, "Ciudad modificada correctamente.");
+				} else {
+					JOptionPane.showMessageDialog(null, "Error al modificar la ciudad.");
+				}
+				limpiarcampos();
+
+			}
 		});
-		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 25));
-		btnNewButton.setBounds(335, 608, 273, 43);
+		btnModificar.setFont(new Font("Stencil", Font.PLAIN, 25));
+		btnModificar.setBounds(474, 482, 273, 43);
+		add(btnModificar);
+		
+		btnNewButton = new JButton("buscar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buscarPorMarcaModeloColor();
+			}
+		});
+		btnNewButton.setBounds(840, 120, 109, 30);
 		add(btnNewButton);
-		
-		JLabel lblIdDeLa = new JLabel("marca del movil a modificar modificar");
-		lblIdDeLa.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblIdDeLa.setFont(new Font("Sitka Subheading", Font.BOLD, 16));
-		lblIdDeLa.setBounds(71, 100, 317, 14);
-		add(lblIdDeLa);
-		
-		textmarcamodificar = new JTextField();
-		textmarcamodificar.setColumns(10);
-		textmarcamodificar.setBounds(398, 88, 206, 26);
-		add(textmarcamodificar);
-		
-		JLabel lblNombreDelPais = new JLabel("modelo del movil a modificar");
-		lblNombreDelPais.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNombreDelPais.setFont(new Font("Sitka Subheading", Font.BOLD, 16));
-		lblNombreDelPais.setBounds(614, 99, 317, 14);
-		add(lblNombreDelPais);
-		
-		textmodelomodificar = new JTextField();
-		textmodelomodificar.setColumns(10);
-		textmodelomodificar.setBounds(940, 87, 206, 26);
-		add(textmodelomodificar);
-		
-		textFieldcapacidad = new JTextField();
-		textFieldcapacidad.setColumns(10);
-		textFieldcapacidad.setBounds(615, 419, 203, 20);
-		add(textFieldcapacidad);
-
-	}
-		
 	}
 
+	public void limpiarcampos() {
+
+		textField_modelo2.setText("");
+		textField_Marca2.setText("");
+		textFieldMarca.setText("");
+		textFieldModelo.setText("");
+		textFieldPrecio2.setText("");
+		spinnerCantidad2.setValue(0);
+		textFieldColor1.setText("");
+		textFieldColor2.setText("");
+		textFieldDescripcion2.setText("");
+		textFieldCapacidad2.setText("");
+		gRadioGarantia.clearSelection();
+		gRadioEstado.clearSelection();
+
+	}
+
+	public void buscarPorMarcaModeloColor() {
+		String nombreMarca = textFieldMarca.getText().trim();
+		String nombreModelo = textFieldModelo.getText().trim();
+		String nombreColor = textFieldColor1.getText().trim();
+
+		BBDDmoviles bd = new BBDDmoviles();
+		ArrayList<Cliente> resultado = bd.consultaGeneralPorMarcaModeloyColor(nombreMarca, nombreModelo, nombreColor);
+
+		if (!resultado.isEmpty()) {
+			Cliente c = resultado.get(0);
+
+			textField_Marca2.setText(c.getMarca());
+			textField_modelo2.setText(c.getModelo());
+			textFieldPrecio2.setText(String.valueOf(c.getPrecio())); // Suponiendo que textFieldPrecio2 es un JTextField
+			spinnerCantidad2.setValue(c.getCantidad()); // Suponiendo que es un JSpinner
+			textFieldColor2.setText(c.getColor());
+			textFieldDescripcion2.setText(c.getDescripcion());
+			textFieldCapacidad2.setText(String.valueOf(c.getCapacidad()));
+
+			if ("si".equalsIgnoreCase(c.getGarantia())) {
+				radioButtonSi2.setSelected(true);
+			} else {
+				radioButtonNo2.setSelected(true);
+			}
+
+			if ("nuevo".equalsIgnoreCase(c.getTipo())) {
+				radioButtonNuevo2.setSelected(true);
+			} else {
+				radioButtonRenovado2.setSelected(true);
+			}
+		} else {
+
+			limpiarcampos();
+			JOptionPane.showMessageDialog(null, "No se encontraron resultados con los criterios proporcionados.");
+		}
+	}
+}

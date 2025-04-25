@@ -16,14 +16,14 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import modelo.Cliente;
-
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 
 /**
  * Clase que gestiona la conexión y operaciones con la base de datos del sistema
- * de gestión de ventas de móviles. Permite insertar y consultar datos, procesar ventas y
- * enviar correos con boletas.
+ * de gestión de ventas de móviles. Permite insertar y consultar datos, procesar
+ * ventas y enviar correos con boletas.
+ * 
  * @author rocki
  */
 public class BBDDmoviles {
@@ -34,8 +34,9 @@ public class BBDDmoviles {
 
 	/**
 	 * Inserta un nuevo móvil en la base de datos.
-	 *  @param tf Objeto Cliente con los datos del móvil.
-	 *  @return true si la inserción fue exitosa, false si ocurrió un error.
+	 * 
+	 * @param tf Objeto Cliente con los datos del móvil.
+	 * @return true si la inserción fue exitosa, false si ocurrió un error.
 	 */
 	public boolean insertaDatos(Cliente tf) {
 		try {
@@ -59,11 +60,12 @@ public class BBDDmoviles {
 		return false;
 
 	}
-	
+
 	/**
 	 * Inserta un nuevo cliente en la base de datos.
-	 *  @param cl Objeto Cliente con los datos del cliente.
-	 *  @return true si la inserción fue exitosa, false si ocurrió un error.
+	 * 
+	 * @param cl Objeto Cliente con los datos del cliente.
+	 * @return true si la inserción fue exitosa, false si ocurrió un error.
 	 */
 	public boolean insertaCliente(Cliente cl) {
 		try {
@@ -83,9 +85,10 @@ public class BBDDmoviles {
 		return false;
 
 	}
-	
+
 	/**
 	 * Consulta las marcas de móviles disponibles.
+	 * 
 	 * @return Lista de marcas únicas de móviles.
 	 */
 	public ArrayList<String> consultaCMBporMarca() {
@@ -108,9 +111,10 @@ public class BBDDmoviles {
 		}
 
 	}
-	
+
 	/**
 	 * Consulta los modelos de móviles disponibles.
+	 * 
 	 * @return Lista de modelos únicos de móviles.
 	 */
 	public ArrayList<String> consultaCMBporModelo() {
@@ -133,9 +137,10 @@ public class BBDDmoviles {
 		}
 
 	}
-	
+
 	/**
 	 * Obtener modelos disponibles para marca.
+	 * 
 	 * @param marcaseleccionada la marca seleccionada
 	 * @return la lista de modelos de este marca
 	 */
@@ -158,10 +163,11 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	/**
 	 * Consulta la información completa de los móviles de una marca.
-	 * @param marca la marca a buscar 
+	 * 
+	 * @param marca la marca a buscar
 	 * @return List de objetos cliente, que contienen datos de los móviles
 	 */
 	public ArrayList<Cliente> consultaGeneralPorMarca(String marca) {
@@ -194,9 +200,10 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	/**
 	 * Consultar información completa de los móviles de un modelo.
+	 * 
 	 * @param modelo el modelo para buscar
 	 * @return List de objetos cliente, que contienen información sobre el móvil
 	 */
@@ -230,10 +237,11 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	/**
 	 * Consultar las ventas realizadas por el cliente en la fecha mencionada
-	 * @param dni el DNI del cliente
+	 * 
+	 * @param dni   el DNI del cliente
 	 * @param fecha la fecha o parte de ella (LIKE formato SQL)
 	 * @return List de objetos cliente con la información sobre ventas
 	 */
@@ -267,12 +275,13 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	/**
-	 * Procesa una venta Verificar si existe el stock necesario y si efectivamente el cliente es quien dice 
-	 * ser.
-	 * @param venta. Objeto Cliente con la información de la venta.
-	 * @return. true si la venta fue realizada exitosamente, false si es lo contrario.
+	 * Procesa una venta Verificar si existe el stock necesario y si efectivamente
+	 * el cliente es quien dice ser.
+	 * 
+	 * @param venta. Objeto Cliente con la información de la venta. @return. true si
+	 *               la venta fue realizada exitosamente, false si es lo contrario.
 	 */
 	public boolean procesarVenta(Cliente venta) {
 		// Controlamos que la venta sea mayor a 0
@@ -317,8 +326,10 @@ public class BBDDmoviles {
 
 	/**
 	 * Genera una boleta de venta y la envía por correo.
-	 * @param venta. Objeto Cliente con la información necesaria para enviar la boleta.
-	 * @return. true si el correo fue enviado exitosamente, false es lo contrario.
+	 * 
+	 * @param venta. Objeto Cliente con la información necesaria para enviar la
+	 *               boleta. @return. true si el correo fue enviado exitosamente,
+	 *               false es lo contrario.
 	 */
 	public boolean correo(Cliente venta) {
 		try (Connection conexion = DriverManager.getConnection(x, xx, xxx);
@@ -363,6 +374,7 @@ public class BBDDmoviles {
 
 	/**
 	 * Enviar correo con el contenido de la boleta.
+	 * 
 	 * @param destinatario
 	 * @param asunto
 	 * @param mensaje
@@ -384,10 +396,10 @@ public class BBDDmoviles {
 
 		// Crear la sesión con autenticación
 		Session session = Session.getInstance(props, new Authenticator() {
-		    @Override
-		    protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
-		        return new jakarta.mail.PasswordAuthentication(remitente, claveApp);
-		    }
+			@Override
+			protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
+				return new jakarta.mail.PasswordAuthentication(remitente, claveApp);
+			}
 		});
 
 		try {
@@ -406,11 +418,12 @@ public class BBDDmoviles {
 	}
 
 	/**
-
-	Verificar que un cliente con el id pasado exista en la base de datos.
-	* @param idCliente
-	* @return boolean dependiendo si encuentre al cliente o no
-	*/
+	 * 
+	 * Verificar que un cliente con el id pasado exista en la base de datos.
+	 * 
+	 * @param idCliente
+	 * @return boolean dependiendo si encuentre al cliente o no
+	 */
 	public boolean existeCliente(int idCliente) {
 		boolean existe = false;
 		try (Connection conexion = DriverManager.getConnection(x, xx, xxx);
@@ -431,8 +444,9 @@ public class BBDDmoviles {
 
 	/**
 	 * Consulta datos del cliente por su DNI (coincidencia parcial).
-	 *  @param dni Parte o totalidad del DNI a buscar.
-	 *  @return Lista de clientes que coincidan con el DNI proporcionado.
+	 * 
+	 * @param dni Parte o totalidad del DNI a buscar.
+	 * @return Lista de clientes que coincidan con el DNI proporcionado.
 	 */
 	public ArrayList<Cliente> consultaGeneralPorDNI(String dni) {
 		ArrayList<Cliente> arrTodo = new ArrayList<>();
@@ -462,39 +476,168 @@ public class BBDDmoviles {
 			return new ArrayList<>();
 		}
 	}
+
 	public ArrayList<Cliente> getVentasByDniAndFecha(String dni, String fecha) {
-	    ArrayList<Cliente> ventas = new ArrayList<>();
+		ArrayList<Cliente> ventas = new ArrayList<>();
 
+		try {
+			Connection conn = DriverManager.getConnection(x, xx, xxx);
+			PreparedStatement pstmt = conn.prepareStatement(
+					"SELECT moviles.marca, idVenta, moviles.modelo, ventas.cantidad, ventas.fecha, dni "
+							+ "FROM ventas, moviles, clientes " + "WHERE ventas.idArticulo = moviles.idArticulo "
+							+ "AND ventas.idCliente = clientes.idCliente " + "AND dni LIKE ? AND fecha LIKE ?");
 
-	    try {
-	    		Connection conn = DriverManager.getConnection(x, xx, xxx);
-	         PreparedStatement pstmt = conn.prepareStatement(
-	        		 "SELECT moviles.marca, idVenta, moviles.modelo, ventas.cantidad, ventas.fecha, dni " +
-	                 "FROM ventas, moviles, clientes " +
-	                 "WHERE ventas.idArticulo = moviles.idArticulo " +
-	                 "AND ventas.idCliente = clientes.idCliente " + 
-	                 "AND dni LIKE ? AND fecha LIKE ?");
+			pstmt.setString(1, "%" + dni + "%");
+			pstmt.setString(2, "%" + fecha + "%");
 
-	        pstmt.setString(1, "%" + dni + "%");
-	        pstmt.setString(2, "%" + fecha + "%");
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					Cliente cliente = new Cliente();
+					cliente.setDni(rs.getString("dni"));
+					cliente.setIdVenta(rs.getInt("idVenta"));
+					cliente.setModelo(rs.getString("modelo"));
+					cliente.setCantidadVendidas(rs.getInt("cantidad"));
+					cliente.setFecha(rs.getString("fecha"));
+					ventas.add(cliente);
+				}
+			}
 
-	        try (ResultSet rs = pstmt.executeQuery()) {
-	            while (rs.next()) {
-	                Cliente cliente = new Cliente();
-	                cliente.setDni(rs.getString("dni"));
-	                cliente.setIdVenta(rs.getInt("idVenta"));
-	                cliente.setModelo(rs.getString("modelo"));
-	                cliente.setCantidadVendidas(rs.getInt("cantidad"));
-	                //cliente.setFecha(rs.getString("fecha"));
-	                ventas.add(cliente);
-	            }
-	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+		return ventas;
+	}
 
-	    return ventas;
+	/**
+	 * public ArrayList<Cliente>ModificarBorrarMovil(String marca, String modelo,
+	 * float cantidad, int precio, String color, String descripcion, int
+	 * capacidad,String tipo ,String garantia){
+	 * 
+	 * ArrayList<Cliente> arrModificarBorrarMovil = new ArrayList<>();
+	 * 
+	 * try { Connection conexion = DriverManager.getConnection(x, xx, xxx);
+	 * Statement consulta = conexion.createStatement(); ResultSet registro =
+	 * consulta.executeQuery("SELECT * from moviles= '");
+	 * 
+	 * while (registro.next()) { Cliente mo = new Cliente();
+	 * mo.setIdArticulo(registro.getInt("idArticulo"));
+	 * mo.setMarca(registro.getString("marca"));
+	 * mo.setModelo(registro.getString("modelo"));
+	 * mo.setPrecio(registro.getFloat("precio"));
+	 * mo.setCantidad(registro.getInt("cantidad"));
+	 * mo.setColor(registro.getString("color"));
+	 * mo.setDescripcion(registro.getString("descripcion"));
+	 * mo.setCapacidad(registro.getInt("capacidad"));
+	 * mo.setGarantia(registro.getString("garantia"));
+	 * mo.setTipo(registro.getString("tipo")); arrModificarBorrarMovil.add(mo);
+	 * 
+	 * } return arrModificarBorrarMovil;
+	 * 
+	 * } catch (SQLException e) { e.printStackTrace(); return new ArrayList<>(); }
+	 * 
+	 * //return ModificarBorrarMovil; }
+	 **/
+
+	public ArrayList<Cliente> consultaGeneralPorMarcaModeloyColor(String marca, String modelo, String color) {
+
+		ArrayList<Cliente> arrTodo = new ArrayList<>();
+
+		Connection conexion;
+
+		try {
+
+			conexion = DriverManager.getConnection(x, xx, xxx);
+
+			PreparedStatement consulta = conexion.prepareStatement(
+
+					"SELECT * " +
+
+							"FROM moviles " +
+
+							"WHERE LOWER(marca) LIKE LOWER(?) AND LOWER(modelo) LIKE LOWER(?) AND LOWER(color) LIKE LOWER(?)"
+
+			);
+
+			consulta.setString(1, "%" + marca.toLowerCase() + "%");
+
+			consulta.setString(2, "%" + modelo.toLowerCase() + "%");
+
+			consulta.setString(3, "%" + color.toLowerCase() + "%");
+
+			ResultSet registro = consulta.executeQuery();
+
+			while (registro.next()) {
+
+				Cliente pcl = new Cliente();
+				pcl.setIdArticulo(registro.getInt("idArticulo"));
+				pcl.setMarca(registro.getString("marca"));
+				pcl.setModelo(registro.getString("modelo"));
+				pcl.setPrecio(registro.getInt("precio"));
+				pcl.setCantidad(registro.getInt("cantidad"));
+				pcl.setColor(registro.getString("color"));
+				pcl.setDescripcion(registro.getString("descripcion"));
+				pcl.setCapacidad(registro.getInt("capacidad"));
+				pcl.setGarantia(registro.getString("garantia"));
+				pcl.setTipo(registro.getString("tipo"));
+
+				arrTodo.add(pcl);
+
+			}
+
+			conexion.close();
+
+			return arrTodo;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+			return new ArrayList<>();
+
+		}
+	}
+
+	public boolean modificaDatosMovil(Cliente c) {
+		Connection conexion;
+		try {
+			conexion = DriverManager.getConnection(x, xx, xxx);
+			Statement consulta = conexion.createStatement();
+
+			consulta.executeUpdate("update moviles set " + "marca='" + c.getMarca() + "', " + "modelo='" + c.getModelo()
+					+ "', " + "precio='" + c.getPrecio() + "', " + "cantidad=" + c.getCantidad() + "color="
+					+ c.getColor() + "descripcion=" + c.getDescripcion() + "capacidad=" + c.getCapacidad() + "garantia="
+					+ c.getGarantia() + "tipo=" + c.getTipo() + " where id = " + c.getIdArticulo());
+
+			conexion.close();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean borrarMovil(Cliente c) {
+
+		Connection conexion;
+
+		try {
+			conexion = DriverManager.getConnection(x, xx, xxx);
+			Statement consulta = conexion.createStatement();
+			int valor = consulta.executeUpdate("delete from moviles where idArticulo= '" + c.getIdArticulo());
+
+			if (valor == 1) {
+				JOptionPane.showMessageDialog(null, "Borrado Correctamente");
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al borrar el movil");
+			}
+			conexion.close();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }
+
