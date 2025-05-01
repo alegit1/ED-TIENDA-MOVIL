@@ -30,6 +30,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class ModificarMovil extends JPanel {
 
@@ -59,6 +60,7 @@ public class ModificarMovil extends JPanel {
 	private JLabel lblColor_1;
 	private JTextField textFieldColor1;
 	private JButton btnNewButton;
+	private int idMovilSeleccionado = -1;
 
 	public ModificarMovil() {
 		gRadioGarantia = new ButtonGroup();
@@ -113,6 +115,7 @@ public class ModificarMovil extends JPanel {
 		add(lblCantidad);
 
 		spinnerCantidad2 = new JSpinner();
+		spinnerCantidad2.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		spinnerCantidad2.setBounds(518, 236, 81, 20);
 		add(spinnerCantidad2);
 
@@ -193,6 +196,7 @@ public class ModificarMovil extends JPanel {
 				Boolean acierto = false;
                 BBDDmoviles b = new BBDDmoviles();
                 Cliente cl = new Cliente();
+                cl.setIdArticulo(idMovilSeleccionado);
 				cl.setMarca(textField_Marca2.getText());
 				cl.setModelo(textField_modelo2.getText());
 				cl.setPrecio(Float.parseFloat(textFieldPrecio2.getText()));
@@ -201,12 +205,12 @@ public class ModificarMovil extends JPanel {
 				cl.setCapacidad(Integer.parseInt(textFieldCapacidad2.getText()));
 				cl.setCantidad((Integer) spinnerCantidad2.getValue());
 				
-                int valor = JOptionPane.showConfirmDialog(null, "¿Seguro de eliminar la ciudad seleccionada?");
+                int valor = JOptionPane.showConfirmDialog(null, "¿Seguro de eliminar la móvil seleccionada?");
                 if (valor == JOptionPane.OK_OPTION) {
                     acierto = b.borrarMovil(cl);
                 }
                 if (acierto) {
-                    JOptionPane.showMessageDialog(null, "Ciudad eliminada.");
+                    JOptionPane.showMessageDialog(null, "Móvil eliminada.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al eliminar la ciudad seleccionada.");
                 }
@@ -256,6 +260,7 @@ public class ModificarMovil extends JPanel {
 				Boolean acierto = false;
 				BBDDmoviles bd = new BBDDmoviles();
 				Cliente c = new Cliente();
+				c.setIdArticulo(idMovilSeleccionado);
 				c.setMarca(textField_Marca2.getText());
 				c.setModelo(textField_modelo2.getText());
 				c.setPrecio(Float.parseFloat(textFieldPrecio2.getText()));
@@ -321,7 +326,7 @@ public class ModificarMovil extends JPanel {
 		textFieldCapacidad2.setText("");
 		gRadioGarantia.clearSelection();
 		gRadioEstado.clearSelection();
-
+		idMovilSeleccionado = -1;
 	}
 
 	public void buscarPorMarcaModeloColor() {
@@ -334,11 +339,11 @@ public class ModificarMovil extends JPanel {
 
 		if (!resultado.isEmpty()) {
 			Cliente c = resultado.get(0);
-
+			idMovilSeleccionado = c.getIdArticulo(); 
 			textField_Marca2.setText(c.getMarca());
 			textField_modelo2.setText(c.getModelo());
-			textFieldPrecio2.setText(String.valueOf(c.getPrecio())); // Suponiendo que textFieldPrecio2 es un JTextField
-			spinnerCantidad2.setValue(c.getCantidad()); // Suponiendo que es un JSpinner
+			textFieldPrecio2.setText(String.valueOf(c.getPrecio())); 
+			spinnerCantidad2.setValue(c.getCantidad()); 
 			textFieldColor2.setText(c.getColor());
 			textFieldDescripcion2.setText(c.getDescripcion());
 			textFieldCapacidad2.setText(String.valueOf(c.getCapacidad()));

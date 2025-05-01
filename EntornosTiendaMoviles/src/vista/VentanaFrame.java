@@ -69,13 +69,13 @@ public class VentanaFrame extends JFrame {
 		mnNewMenu.add(separator_4);
 		
 		JMenuItem mntmModifical = new JMenuItem("Modificar Móvil");
+		mntmModifical.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModificarMovil a = new ModificarMovil();
+				nuevoPanel(a);
+			}
+		});
 		mnNewMenu.add(mntmModifical);
-		
-		JSeparator separator_3 = new JSeparator();
-		mnNewMenu.add(separator_3);
-		
-		JMenuItem mntmEliminar = new JMenuItem("Eliminar Móvil");
-		mnNewMenu.add(mntmEliminar);
 		
 		JSeparator separator_2 = new JSeparator();
 		mnNewMenu.add(separator_2);

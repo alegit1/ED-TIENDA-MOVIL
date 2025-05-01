@@ -1,5 +1,6 @@
 package controlador;
 
+import java.math.BigDecimal;
 import java.net.PasswordAuthentication;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -336,8 +337,8 @@ public class BBDDmoviles {
 				Statement consulta = conexion.createStatement()) {
 			// Consulta datos adicionales para la boleta
 			ResultSet resultado = consulta.executeQuery("SELECT m.marca, m.precio, c.nombre, m.modelo, v.fecha "
-					+ "FROM moviles m, ventas v " + "JOIN clientes c ON c.idCliente = " + venta.getIdCliente() + " "
-					+ "WHERE m.idArticulo = " + venta.getIdArticulo());
+					+ "FROM moviles m, ventas v, clientes c " + "WHERE c.idCliente = " + venta.getIdCliente() + " "
+					+ "AND m.idArticulo = " + venta.getIdArticulo());
 
 			if (resultado.next()) {// Si hay resultados
 				// Extrae los datos de la consulta
@@ -599,23 +600,40 @@ public class BBDDmoviles {
 	}
 
 	public boolean modificaDatosMovil(Cliente c) {
-		Connection conexion;
-		try {
-			conexion = DriverManager.getConnection(x, xx, xxx);
-			Statement consulta = conexion.createStatement();
+	    try (Connection conexion = DriverManager.getConnection(x, xx, xxx);
+	         PreparedStatement ps = conexion.prepareStatement(
+	            "UPDATE moviles SET marca = ?, modelo = ?, precio = ?, cantidad = ?, color = ?, " +
+	            "descripcion = ?, capacidad = ?, garantia = ?, tipo = ? WHERE idArticulo = ?")) {
 
-			consulta.executeUpdate("update moviles set " + "marca='" + c.getMarca() + "', " + "modelo='" + c.getModelo()
-					+ "', " + "precio='" + c.getPrecio() + "', " + "cantidad=" + c.getCantidad() + "color="
-					+ c.getColor() + "descripcion=" + c.getDescripcion() + "capacidad=" + c.getCapacidad() + "garantia="
-					+ c.getGarantia() + "tipo=" + c.getTipo() + " where id = " + c.getIdArticulo());
+	        ps.setString(1, c.getMarca());
+	        ps.setString(2, c.getModelo());
+	        ps.setBigDecimal(3, BigDecimal.valueOf(c.getPrecio()));
+	        ps.setInt(4, c.getCantidad());
+	        ps.setString(5, c.getColor());
+	        ps.setString(6, c.getDescripcion());
+	        ps.setInt(7, c.getCapacidad());
+	        ps.setString(8, c.getGarantia());
+	        ps.setString(9, c.getTipo());
+	        ps.setInt(10, c.getIdArticulo());
+	        System.out.println("Actualizando el artículo con ID: " + c.getIdArticulo());
+	        System.out.println("Valores: " + c.getMarca() + ", " + c.getModelo() + ", " + c.getPrecio() + ", etc.");
 
-			conexion.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	        int filas = ps.executeUpdate();
+
+	        if (filas == 0) {
+	            System.out.println("⚠ No se modificó ningún registro. Verifica que idArticulo exista.");
+	            return false;
+	        } else {
+	            System.out.println("✅ Registro modificado correctamente.");
+	            return true;
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
+
 
 	public boolean borrarMovil(Cliente c) {
 
@@ -640,4 +658,3 @@ public class BBDDmoviles {
 	}
 
 }
-

@@ -194,6 +194,7 @@ public class PanelVenta extends JPanel {
 						JOptionPane.showMessageDialog(null, "Error al enviar correo");
 					}
 				} else if (rdbtnNo.isSelected()) {
+					
 				}
 				ventaprocesada = b.procesarVenta(c);
 				if (ventaprocesada) {
