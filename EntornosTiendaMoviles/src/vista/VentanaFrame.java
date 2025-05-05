@@ -45,7 +45,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmInsertar = new JMenuItem("Insertar Móvil");
 		mntmInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				pantallaCompleta();
 				InsertarMovil i = new InsertarMovil();
 				nuevoPanel(i);
 			}
@@ -58,7 +58,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmConsultar = new JMenuItem("Consultar Móvil");
 		mntmConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				pantallaCompleta();
 				ConsultarMovil c=new ConsultarMovil();
 				nuevoPanel(c);
 			}
@@ -71,6 +71,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmModifical = new JMenuItem("Modificar Móvil");
 		mntmModifical.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				pantallaCompleta();
 				ModificarMovil a = new ModificarMovil();
 				nuevoPanel(a);
 			}
@@ -83,6 +84,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmAnadirCliente = new JMenuItem("Añadir Cliente");
 		mntmAnadirCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				pantallaCompleta();
 				AñadirCliente a = new AñadirCliente();
 				nuevoPanel(a);
 			}
@@ -95,7 +97,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmRealizarVenta = new JMenuItem("Realizar Venta");
 		mntmRealizarVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				pantallaCompleta();
 				PanelVenta p = new PanelVenta();
 				nuevoPanel(p);
 				
@@ -109,7 +111,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmInfoCompra = new JMenuItem("Información Compra");
 		mntmInfoCompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				pantallaCompleta();
 				ConsultarInformacionVenta c = new ConsultarInformacionVenta();
 				nuevoPanel(c);
 			}
@@ -130,5 +132,9 @@ public class VentanaFrame extends JFrame {
 		contentPane.add(p);
 		contentPane.repaint();
 		contentPane.revalidate();
+	}
+	
+	public void pantallaCompleta() {
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 }

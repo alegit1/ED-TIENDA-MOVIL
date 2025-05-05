@@ -32,7 +32,6 @@ public class ConsultarMovil extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private DefaultTableModel modeloTabla;
-
 	private ArrayList<Cliente> misClientes;
 	private JComboBox comboBoxMarca;
 	private JComboBox comboBoxModelo;
@@ -71,11 +70,9 @@ public class ConsultarMovil extends JPanel {
 
 				if (selectedItem != null) { // Validar que no sea null
 					String marcaseleccionada = selectedItem.toString();
-
-					// Obtener los distritos del país seleccionado
 					ArrayList<String> modelos = bd.consultaModeloPorMarca(marcaseleccionada);
 
-					// Limpiar y actualizar el ComboBox de distritos
+					// Limpiar y actualizar el ComboBox de Modelo
 					comboBoxModelo.removeAllItems();
 					if (modelos.isEmpty()) {
 						comboBoxModelo.addItem("No hay modelos disponibles"); // Mensaje predeterminado
@@ -85,7 +82,7 @@ public class ConsultarMovil extends JPanel {
 						}
 					}
 
-					// Cargar la tabla con datos filtrados por el país seleccionado
+					// Cargar la tabla con datos filtrados por el movil seleccionado
 					misClientes = bd.consultaGeneralPorMarca(marcaseleccionada);
 					cargarTabla();
 				}
@@ -109,11 +106,11 @@ public class ConsultarMovil extends JPanel {
 				BBDDmoviles bd = new BBDDmoviles();
 					if (selectedItem != null) { // Validar que no sea null
 						String modeloseleccionado = selectedItem.toString();
-						if (!modeloseleccionado.equals("No hay distritos disponibles")) {
+						if (!modeloseleccionado.equals("No hay Modelos disponibles")) {
 							misClientes = bd.consultaGeneralPorModelo(modeloseleccionado);
 							cargarTabla();
 						} else {
-							// Si no hay distritos disponibles, limpiar la tabla
+							// Si no hay modelos disponibles, limpiar la tabla
 							misClientes.clear();
 							cargarTabla();
 						}
@@ -126,7 +123,7 @@ public class ConsultarMovil extends JPanel {
 		add(comboBoxModelo);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(207, 416, 529, 279);
+		scrollPane.setBounds(92, 416, 707, 279);
 		add(scrollPane);
 
 		misClientes = new ArrayList<Cliente>();

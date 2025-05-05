@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
+import javax.swing.SpinnerNumberModel;
 
 /**
  * Clase PanelVenta que representa la interfaz gráfica del panel de ventas
@@ -48,6 +49,11 @@ public class PanelVenta extends JPanel {
 	private DefaultTableModel modeloTablaClientes;
 	private JTable tableClientes;
 	private JTextField textFieldDNI;
+	private JSpinner spinnercantidad;
+	private JRadioButton rdbtnSi;
+	private JRadioButton rdbtnNo;
+	private ButtonGroup groupAfirmacion; 
+
 
 	/**
 	 * Create the panel.
@@ -100,7 +106,8 @@ public class PanelVenta extends JPanel {
 		textFieldCliente.setBounds(1013, 223, 170, 20);
 		add(textFieldCliente);
 
-		JSpinner spinnercantidad = new JSpinner();
+		spinnercantidad = new JSpinner();
+		spinnercantidad.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 		spinnercantidad.setBounds(1013, 280, 64, 20);
 		add(spinnercantidad);
 
@@ -158,15 +165,26 @@ public class PanelVenta extends JPanel {
 		lblNewLabel_1_2.setBounds(377, 115, 100, 52);
 		add(lblNewLabel_1_2);
 
-		JRadioButton rdbtnSi = new JRadioButton("SI");
+		rdbtnSi = new JRadioButton("SI");
 		rdbtnSi.setBounds(1013, 342, 109, 23);
 		add(rdbtnSi);
+		rdbtnSi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textFieldEmail.setEnabled(true);
+			}
+		});
 
-		JRadioButton rdbtnNo = new JRadioButton("NO");
+		rdbtnNo = new JRadioButton("NO");
 		rdbtnNo.setBounds(1146, 342, 109, 23);
 		add(rdbtnNo);
+		rdbtnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textFieldEmail.setEnabled(false);
+				textFieldEmail.setText(""); // Opcional: también limpia el campo
+			}
+		});
 
-		ButtonGroup groupAfirmacion = new ButtonGroup();
+		groupAfirmacion = new ButtonGroup(); // Lo declaramos como variablePrivada para que funcione en toda la clase 
 		groupAfirmacion.add(rdbtnSi);
 		groupAfirmacion.add(rdbtnNo);
 
@@ -174,46 +192,6 @@ public class PanelVenta extends JPanel {
 		textFieldEmail.setBounds(1013, 408, 170, 20);
 		add(textFieldEmail);
 		textFieldEmail.setColumns(10);
-
-		JButton btnNewButton = new JButton("VENTA");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				BBDDmoviles b = new BBDDmoviles();
-				boolean positivo = false;
-				boolean ventaprocesada = false;
-				Cliente c = new Cliente();
-				c.setIdArticulo(Integer.parseInt(textFieldArticulo.getText()));
-				c.setIdCliente(Integer.parseInt(textFieldCliente.getText()));
-				c.setCantidadVendidas((Integer) spinnercantidad.getValue());
-				c.setCorreo(textFieldEmail.getText());
-				if (rdbtnSi.isSelected()) {
-					positivo = b.correo(c);
-					if (positivo) {
-						JOptionPane.showMessageDialog(null, "Correo enviado");
-					} else {
-						JOptionPane.showMessageDialog(null, "Error al enviar correo");
-					}
-				} else if (rdbtnNo.isSelected()) {
-					
-				}
-				ventaprocesada = b.procesarVenta(c);
-				if (ventaprocesada) {
-					JOptionPane.showMessageDialog(null, "Venta procesada correctamente y stock actualizado.");
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"Venta cancelada: no hay suficiente stock o el artículo no existe.");
-				}
-				textFieldArticulo.setText("");
-				textFieldCliente.setText("");
-				textFieldEmail.setText("");
-				spinnercantidad.setValue(0);
-				groupAfirmacion.clearSelection();
-
-			}
-		});
-		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 20));
-		btnNewButton.setBounds(940, 482, 151, 43);
-		add(btnNewButton);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(20, 499, 603, 216);
@@ -261,12 +239,63 @@ public class PanelVenta extends JPanel {
 		lblNewLabel_1_1_1.setBounds(206, 429, 100, 52);
 		add(lblNewLabel_1_1_1);
 
+		JButton btnNewButton = new JButton("VENTA");
+		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 20));
+		btnNewButton.setBounds(940, 482, 151, 43);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(!controlamosEspaciosenBlanco()) {
+					return;
+				}
+				realizarVenta();								
+				limpiarCampos();
+
+			}
+		});
+		add(btnNewButton);
+
 		// Cargar combos al iniciar
 		cargaComboMarcaCompletos();
 		cargaComboModeloCompletos();
 	}
+	public void realizarVenta() {
+		BBDDmoviles b = new BBDDmoviles();
+		boolean positivo = false;
+		boolean ventaprocesada = false;
+		Cliente c = new Cliente();
+		c.setIdArticulo(Integer.parseInt(textFieldArticulo.getText()));
+		c.setIdCliente(Integer.parseInt(textFieldCliente.getText()));
+		c.setCantidadVendidas((Integer) spinnercantidad.getValue());
+		c.setCorreo(textFieldEmail.getText());
+		if (rdbtnSi.isSelected()) {
+			positivo = b.correo(c);
+			if (positivo) {
+				JOptionPane.showMessageDialog(null, "Correo enviado");
+			} else {
+				JOptionPane.showMessageDialog(null, "Error al enviar correo");
+			}
+		}  if (rdbtnNo.isSelected()) {
+			//textFieldEmail.setEnabled(false); lo debemos hacer en un action 
+		}
+		ventaprocesada = b.procesarVenta(c);
+		if (ventaprocesada) {
+			JOptionPane.showMessageDialog(null, "Venta procesada correctamente y stock actualizado.");
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"Venta cancelada: no hay suficiente stock o el artículo no existe.");
+		}
+	}
 	
-	
+	private boolean controlamosEspaciosenBlanco() {
+		if (textFieldArticulo.getText().trim().isEmpty() || textFieldCliente.getText().trim().isEmpty()
+				|| (!rdbtnSi.isSelected() && !rdbtnNo.isSelected())) {
+			JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+			return false;
+		}
+		return true;
+	}
+
+
 	/**
 	 * Realiza la búsqueda de un cliente por DNI y carga los resultados en la tabla de clientes.
 	 */
@@ -276,6 +305,16 @@ public class PanelVenta extends JPanel {
 	    misClientes = bd.consultaGeneralPorDNI(texto); // Asegúrate de que esta consulta funcione
 	    cargarTablaClientes(); // Carga los datos en la tabla de clientes
 	}
+	
+	private void limpiarCampos() {
+		textFieldArticulo.setText("");
+		textFieldCliente.setText("");
+		spinnercantidad.setValue(1);
+		groupAfirmacion.clearSelection();
+		textFieldEmail.setText("");
+		textFieldEmail.setEnabled(true);
+	}
+
 
 	/**
 	 *Carga todas las marcas disponibles en el comboBox de marcas. 

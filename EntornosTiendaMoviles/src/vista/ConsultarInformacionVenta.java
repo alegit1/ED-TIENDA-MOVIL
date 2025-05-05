@@ -47,7 +47,6 @@ public class ConsultarInformacionVenta extends JPanel {
     public ConsultarInformacionVenta() {
         setLayout(null);
 
-        // Etiqueta principal
         JLabel lblTickets = new JLabel("INFORMACIÓN DE VENTAS");
         lblTickets.setHorizontalAlignment(SwingConstants.CENTER);
         lblTickets.setForeground(Color.RED);
@@ -56,33 +55,28 @@ public class ConsultarInformacionVenta extends JPanel {
         lblTickets.setBounds(272, 66, 390, 43);
         add(lblTickets);
 
-        // Etiqueta para el campo de DNI
         JLabel lblNewLabel_1 = new JLabel("DNI");
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel_1.setFont(new Font("Stencil", Font.PLAIN, 20));
         lblNewLabel_1.setBounds(177, 170, 100, 52);
         add(lblNewLabel_1);
 
-        // Etiqueta para el campo de fecha
         JLabel lblNewLabel_1_1 = new JLabel("FECHA");
         lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel_1_1.setFont(new Font("Stencil", Font.PLAIN, 20));
         lblNewLabel_1_1.setBounds(514, 181, 100, 30);
         add(lblNewLabel_1_1);
 
-        // Campo de texto para ingresar el DNI
         textFieldDni = new JTextField();
         textFieldDni.setBounds(301, 182, 150, 30);
         add(textFieldDni);
         textFieldDni.setColumns(10);
 
-        // Campo de texto para la fecha (opcional)
-        textFieldFecha = new JTextField(); // Renombrado para mayor claridad
+        textFieldFecha = new JTextField(); 
         textFieldFecha.setColumns(10);
         textFieldFecha.setBounds(633, 182, 150, 30);
         add(textFieldFecha);
 
-        // Tabla y scroll
         model = new DefaultTableModel();
         model.setColumnIdentifiers(new Object[]{
                 "DNI", "idVenta", "Modelo", "Cantidad Vendidas", "Fecha"
@@ -90,7 +84,7 @@ public class ConsultarInformacionVenta extends JPanel {
         table = new JTable(model);
 
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(224, 277, 559, 350);
+        scrollPane.setBounds(103, 277, 745, 355);
         add(scrollPane);
 
         btnBuscar = new JButton("Buscar");
@@ -111,27 +105,26 @@ public class ConsultarInformacionVenta extends JPanel {
          * @param e Evento de acción generado por el botón
          */
         btnBuscar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                BBDDmoviles dbManager = new BBDDmoviles();
-                String idCliente = textFieldDni.getText().trim();
-                String fecha = textFieldFecha.getText().trim();
-
-              
-                if (idCliente.isEmpty() || fecha.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
-                    return;
-                }
-
-                
-                misClientes = dbManager.getVentasByDniAndFecha(idCliente, fecha); 
-
-               
-                cargaTabla();
+            public void actionPerformed(ActionEvent e) {            	
+            	consultarPorDniyFecha();            	
             }
         });
 
         table.setModel(model);
         scrollPane.setViewportView(table);
+    }
+    
+    public void consultarPorDniyFecha() {
+        BBDDmoviles dbManager = new BBDDmoviles();
+        String idCliente = textFieldDni.getText().trim();
+        String fecha = textFieldFecha.getText().trim();
+      
+        if (idCliente.isEmpty() || fecha.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un DNI válido.");
+            return;
+        }                
+        misClientes = dbManager.getVentasByDniAndFecha(idCliente, fecha);                
+        cargaTabla();
     }
     /**
      * Carga los datos de ventas en la tabla de resultados.
@@ -147,7 +140,6 @@ public class ConsultarInformacionVenta extends JPanel {
      * Muestra mensaje si no hay resultados.
      * 
      */
-
     public void cargaTabla() {
         model.setRowCount(0); 
 

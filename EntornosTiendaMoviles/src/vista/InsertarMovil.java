@@ -18,6 +18,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SpinnerNumberModel;
 
 
 /**
@@ -37,6 +38,13 @@ public class InsertarMovil extends JPanel {
 	private JTextField textFieldcolor;
 	private JTextField textFielddescripcion;
 	private JTextField textFieldcapacidad;
+	private JRadioButton radioButtonSI;
+	private JRadioButton radioButtonNO;
+	private JRadioButton rdbtnNuevo;
+	private JRadioButton rdbtnRenovado;
+	private JSpinner spinnercantidad;
+	private JButton btnNewButton;
+
 
 	/**
      * Constructor que inicializa los componentes de la interfaz gráfica.
@@ -121,7 +129,8 @@ public class InsertarMovil extends JPanel {
 		add(textFieldprecio);
 		textFieldprecio.setColumns(10);
 
-		JSpinner spinnercantidad = new JSpinner();
+		spinnercantidad = new JSpinner();
+		spinnercantidad.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 		spinnercantidad.setBounds(884, 269, 81, 20);
 		add(spinnercantidad);
 
@@ -141,27 +150,26 @@ public class InsertarMovil extends JPanel {
 		add(textFieldcapacidad);
 
 		// Botones de radio con ButtonGroup para "Garantía"
-		JRadioButton RadioButtonSI = new JRadioButton("SÍ");
-		RadioButtonSI.setFont(new Font("Stencil", Font.PLAIN, 16));
-		RadioButtonSI.setBounds(894, 463, 109, 23);
-		add(RadioButtonSI);
+		radioButtonSI = new JRadioButton("SÍ");
+		radioButtonSI.setFont(new Font("Stencil", Font.PLAIN, 16));
+		radioButtonSI.setBounds(894, 463, 109, 23);
+		add(radioButtonSI);
 
-		JRadioButton RadioButtonNO = new JRadioButton("NO");
-		RadioButtonNO.setFont(new Font("Stencil", Font.PLAIN, 16));
-		RadioButtonNO.setBounds(1052, 463, 109, 23);
-		add(RadioButtonNO);
+		radioButtonNO = new JRadioButton("NO");
+		radioButtonNO.setFont(new Font("Stencil", Font.PLAIN, 16));
+		radioButtonNO.setBounds(1052, 463, 109, 23);
+		add(radioButtonNO);
 
 		ButtonGroup groupGarantia = new ButtonGroup();
-		groupGarantia.add(RadioButtonSI);
-		groupGarantia.add(RadioButtonNO);
+		groupGarantia.add(radioButtonSI);
+		groupGarantia.add(radioButtonNO);
 
-		// Botones de radio con ButtonGroup para "Estado"
-		JRadioButton rdbtnNuevo = new JRadioButton("Nuevo");
+		rdbtnNuevo = new JRadioButton("Nuevo");
 		rdbtnNuevo.setFont(new Font("Stencil", Font.PLAIN, 16));
 		rdbtnNuevo.setBounds(894, 499, 109, 23);
 		add(rdbtnNuevo);
 
-		JRadioButton rdbtnRenovado = new JRadioButton("Renovado");
+		rdbtnRenovado = new JRadioButton("Renovado");
 		rdbtnRenovado.setFont(new Font("Stencil", Font.PLAIN, 16));
 		rdbtnRenovado.setBounds(1052, 499, 109, 23);
 		add(rdbtnRenovado);
@@ -177,59 +185,111 @@ public class InsertarMovil extends JPanel {
          * 
          * @param e Evento de acción que desencadena el método
          */
-		JButton btnNewButton = new JButton("INSERTAR");
+		btnNewButton = new JButton("INSERTAR");		
+		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 25));
+		btnNewButton.setBounds(870, 643, 273, 43);		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean correcto = false;
-				Cliente c = new Cliente();
-				c.setMarca(textFieldmarca.getText());
-				c.setModelo(textFieldmodelo.getText());
-				c.setPrecio(Float.parseFloat(textFieldprecio.getText()));
-				c.setColor(textFieldcolor.getText());
-				c.setDescripcion(textFielddescripcion.getText());
-				c.setCapacidad(Integer.parseInt(textFieldcapacidad.getText()));
-				c.setCantidad((Integer) spinnercantidad.getValue());
-
-				// Comprobar la selección de los radio buttons "Garantía"
-				if (RadioButtonSI.isSelected()) {
-					c.setGarantia("si"); // Suponiendo que Cliente tiene un atributo booleano "garantia"
-				} else if (RadioButtonNO.isSelected()) {
-					c.setGarantia("no");
+				if(!controlamosEspaciosenBlanco()) {
+					return;
 				}
+				
+				Cliente insertarMovil = crearMovil();
+				insertarMovilEnBaseDeDatos(insertarMovil);
 
-				// Comprobar la selección de los radio buttons "Estado"
-				if (rdbtnNuevo.isSelected()) {
-					c.setTipo("Nuevo");
-				} else if (rdbtnRenovado.isSelected()) {
-					c.setTipo("Renovado");
-				}
-
-				int valor = JOptionPane.showConfirmDialog(null, "¿Desea insertar un nuevo Movil?");
-				if (valor == JOptionPane.OK_OPTION) {
-					BBDDmoviles b = new BBDDmoviles();
-					correcto = b.insertaDatos(c);
-					if (correcto) {
-						JOptionPane.showMessageDialog(null, "Insertado Correctamente");
-					} else {
-						JOptionPane.showMessageDialog(null, "Error en insertar el Movil");
-					}
-				}
-				textFieldmarca.setText("");
-				textFieldmodelo.setText("");
-				textFieldcolor.setText("");
-				textFielddescripcion.setText("");
-				spinnercantidad.setValue(0);
-				textFieldprecio.setText("");
-				textFieldcapacidad.setText("");
-				// Limpiar las selecciones de los radio buttons
-		        groupGarantia.clearSelection(); // Desmarcar el grupo de "Garantía"
-		        groupEstado.clearSelection(); // Desmarcar el grupo de "Estado"
+				limpiarCampos();
+		        groupGarantia.clearSelection(); 
+		        groupEstado.clearSelection(); 
 			}
 		});
-		btnNewButton.setFont(new Font("Stencil", Font.PLAIN, 25));
-		btnNewButton.setBounds(870, 643, 273, 43);
 		add(btnNewButton);
 
+	}
+	
+	public boolean controlamosEspaciosenBlanco() {
+		if (textFieldmarca.getText().isEmpty() || textFieldmodelo.getText().trim().isEmpty() ||
+				textFieldprecio.getText().isEmpty() || textFieldcolor.getText().trim().isEmpty() || 	
+				textFielddescripcion.getText().isEmpty() || textFieldcapacidad.getText().trim().isEmpty() 	
+				) {
+			JOptionPane.showMessageDialog(null, "Todos los campos deben estar completos.");
+			return false;
+		}
+		
+		try {
+			int capacidad = Integer.parseInt(textFieldcapacidad.getText().trim());
+			float precio = Float.parseFloat(textFieldprecio.getText());
+			if (capacidad <= 0) {
+				JOptionPane.showMessageDialog(null, "Introduzca una capacidad válida (mayor a 0).");
+				return false;
+			}
+			if (precio <= 0) {
+				JOptionPane.showMessageDialog(null, "Introduzca una precio válido (mayor a 0).");
+				return false;
+			}
+			
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "La capacidad y el precio deben ser números válidos.");
+			return false;
+		}
+		
+		if (!radioButtonSI.isSelected() && !radioButtonNO.isSelected()) {
+			JOptionPane.showMessageDialog(null, "Seleccione una opción de garantía.");
+			return false;
+		}
+
+		if (!rdbtnNuevo.isSelected() && !rdbtnRenovado.isSelected()) {
+			JOptionPane.showMessageDialog(null, "Seleccione una opción de estado (Nuevo o Renovado).");
+			return false;
+		}
+		
+		return true;
+	}
+
+	private Cliente crearMovil() {
+		Cliente c = new Cliente();
+		c.setMarca(textFieldmarca.getText());
+		c.setModelo(textFieldmodelo.getText());
+		c.setPrecio(Float.parseFloat(textFieldprecio.getText()));
+		c.setColor(textFieldcolor.getText());
+		c.setDescripcion(textFielddescripcion.getText());
+		c.setCapacidad(Integer.parseInt(textFieldcapacidad.getText()));
+		c.setCantidad((Integer) spinnercantidad.getValue());
+
+		if (radioButtonSI.isSelected()) {
+			c.setGarantia("si"); 
+		} else if (radioButtonNO.isSelected()) {
+			c.setGarantia("no");
+		}
+
+		if (rdbtnNuevo.isSelected()) {
+			c.setTipo("Nuevo");
+		} else if (rdbtnRenovado.isSelected()) {
+			c.setTipo("Renovado");
+		}
+		return c;
+	}
+	
+	private void insertarMovilEnBaseDeDatos(Cliente nuevoCliente) {
+		boolean correcto = false;
+		int valor = JOptionPane.showConfirmDialog(null, "¿Desea insertar un nuevo Movil?");
+		if (valor == JOptionPane.OK_OPTION) {
+			BBDDmoviles b = new BBDDmoviles();
+			correcto = b.insertaDatos(nuevoCliente);
+			if (correcto) {
+				JOptionPane.showMessageDialog(null, "Insertado Correctamente");
+			} else {
+				JOptionPane.showMessageDialog(null, "Error en insertar el Movil");
+			}
+		}
+	}
+	public void limpiarCampos() {
+		textFieldmarca.setText("");
+		textFieldmodelo.setText("");
+		textFieldcolor.setText("");
+		textFielddescripcion.setText("");
+		spinnercantidad.setValue(0);
+		textFieldprecio.setText("");
+		textFieldcapacidad.setText("");
 	}
 
 }
