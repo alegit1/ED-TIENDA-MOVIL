@@ -34,7 +34,8 @@ public class VentanaFrame extends JFrame {
 
 	public VentanaFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 879, 543);
+		setSize(1280, 740);
+		setLocationRelativeTo(null); // Centra la ventana en pantalla
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -45,7 +46,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmInsertar = new JMenuItem("Insertar Móvil");
 		mntmInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pantallaCompleta();
+			//	pantallaCompleta();
 				InsertarMovil i = new InsertarMovil();
 				nuevoPanel(i);
 			}
@@ -58,7 +59,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmConsultar = new JMenuItem("Consultar Móvil");
 		mntmConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pantallaCompleta();
+			//	pantallaCompleta();
 				ConsultarMovil c=new ConsultarMovil();
 				nuevoPanel(c);
 			}
@@ -71,7 +72,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmModifical = new JMenuItem("Modificar Móvil");
 		mntmModifical.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pantallaCompleta();
+			//	pantallaCompleta();
 				ModificarMovil a = new ModificarMovil();
 				nuevoPanel(a);
 			}
@@ -84,7 +85,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmAnadirCliente = new JMenuItem("Añadir Cliente");
 		mntmAnadirCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pantallaCompleta();
+				//pantallaCompleta();
 				AñadirCliente a = new AñadirCliente();
 				nuevoPanel(a);
 			}
@@ -97,7 +98,7 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmRealizarVenta = new JMenuItem("Realizar Venta");
 		mntmRealizarVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pantallaCompleta();
+				//pantallaCompleta();
 				PanelVenta p = new PanelVenta();
 				nuevoPanel(p);
 				
@@ -111,12 +112,23 @@ public class VentanaFrame extends JFrame {
 		JMenuItem mntmInfoCompra = new JMenuItem("Información Compra");
 		mntmInfoCompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pantallaCompleta();
+				//pantallaCompleta();
 				ConsultarInformacionVenta c = new ConsultarInformacionVenta();
 				nuevoPanel(c);
 			}
 		});
 		mnNewMenu.add(mntmInfoCompra);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Modificar o Borrar Cliente");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//pantallaCompleta();
+				ModificarBorrarClientePanel c = new ModificarBorrarClientePanel();
+				nuevoPanel(c);
+				
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem);
 		
 		JMenu mnNewMenu_1 = new JMenu("|");
 		menuBar.add(mnNewMenu_1);
@@ -134,7 +146,7 @@ public class VentanaFrame extends JFrame {
 		contentPane.revalidate();
 	}
 	
-	public void pantallaCompleta() {
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-	}
+//	public void pantallaCompleta() {
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
+//	}
 }

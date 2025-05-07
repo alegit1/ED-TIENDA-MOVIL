@@ -6,11 +6,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
-
 import javax.swing.JOptionPane;
-
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
@@ -63,6 +62,94 @@ public class BBDDmoviles {
         }
     }
 
+    public boolean existeOnoEnlaBaseDeDatos(String campoAComparar, String campoaBuscar) {
+        if (campoAComparar == null || campoAComparar.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM clientes where "+ campoaBuscar+" = ?");
+            consulta.setString(1, campoAComparar);
+            ResultSet resultado = consulta.executeQuery();
+
+            if (resultado.next()) {
+                return true;
+            }
+            conexion.close();
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+//    public boolean dniExiste(String dni) {
+//    	if (dni == null || dni.trim().isEmpty()) {
+//    		return false;
+//    	}
+//    	
+//    	try {
+//    		Connection conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+//    		PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM clientes WHERE dni = ?");
+//    		consulta.setString(1, dni);
+//    		ResultSet resultado = consulta.executeQuery();
+//    		
+//    		if (resultado.next()) {
+//    			return true;
+//    		}
+//    		conexion.close();
+//    		return false;
+//    	} catch (SQLException e) {
+//    		e.printStackTrace();
+//    		return false;
+//    	}
+//    }
+//    
+//    public boolean correoExiste(String correo) {
+//    	if (correo == null || correo.trim().isEmpty()) {
+//    		return false;
+//    	}
+//    	
+//    	try {
+//    		Connection conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+//    		PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM clientes WHERE correo = ?");
+//    		consulta.setString(1, correo);
+//    		ResultSet resultado = consulta.executeQuery();
+//    		
+//    		if (resultado.next()) {
+//    			return true;
+//    		}
+//    		conexion.close();
+//    		return false;
+//    	} catch (SQLException e) {
+//    		e.printStackTrace();
+//    		return false;
+//    	}
+//    }
+//    
+//    public boolean telefonoExiste(String telefono) {
+//    	if (telefono == null || telefono.trim().isEmpty()) {
+//    		return false;
+//    	}
+//    	
+//    	try {
+//    		Connection conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+//    		PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM clientes WHERE telefono = ?");
+//    		consulta.setString(1, telefono);
+//    		ResultSet resultado = consulta.executeQuery();
+//    		
+//    		if (resultado.next()) {
+//    			return true;
+//    		}
+//    		conexion.close();
+//    		return false;
+//    	} catch (SQLException e) {
+//    		e.printStackTrace();
+//    		return false;
+//    	}
+//    }
+    
     /**
      * Inserta un nuevo cliente en la base de datos.
      * 
@@ -73,11 +160,19 @@ public class BBDDmoviles {
         try {
             Connection conexion = DriverManager.getConnection(URL, USER, PASSWORD);
             PreparedStatement consulta = conexion.prepareStatement(
-                    "INSERT INTO clientes (nombre, dni) VALUES (?, ?)");
-            
+                "INSERT INTO clientes (nombre, dni, correo, telefono, direccion, ciudad, provincia, codigo_postal) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+
             consulta.setString(1, cl.getNombre());
             consulta.setString(2, cl.getDni());
-            
+            consulta.setString(3, cl.getCorreo());
+            consulta.setString(4, cl.getTelefono());
+            consulta.setString(5, cl.getDireccion());
+            consulta.setString(6, cl.getCiudad());
+            consulta.setString(7, cl.getProvincia());
+            consulta.setString(8, cl.getCodigoPostal());
+
             consulta.executeUpdate();
             conexion.close();
             return true;
@@ -86,6 +181,85 @@ public class BBDDmoviles {
             return false;
         }
     }
+
+    
+    public boolean modificaDatosCliente(Cliente cp) {
+        Connection conexion;
+        try {
+            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement ps = conexion.prepareStatement("update clientes SET nombre = ?, direccion = ?, telefono = ?, correo = ?, " +
+                    "codigo_postal = ?, provincia = ?, dni = ?, ciudad = ? where idCliente = ?");
+            ps.setString(1, cp.getNombre());
+            ps.setString(2, cp.getDireccion());
+            ps.setString(3, cp.getTelefono());
+            ps.setString(4, cp.getCorreo());
+            ps.setString(5, cp.getCodigoPostal());
+            ps.setString(6, cp.getProvincia());
+            ps.setString(7, cp.getDni());
+            ps.setString(8, cp.getCiudad());
+            ps.setInt(9, cp.getIdCliente());
+
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean borrarCliente(Cliente c) {
+        Connection conexion;
+        try {
+            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+            Statement consulta = conexion.createStatement();
+            consulta.executeUpdate("delete from clientes where id_cliente=" + c.getIdCliente());
+            conexion.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public ArrayList<Cliente> consultaGeneralPorNombreyTelefonoDelCliente(String nombreCliente, String numeroCliente) {
+        ArrayList<Cliente> arrTodo = new ArrayList<>();
+        Connection conexion;
+        try {
+            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement consulta = conexion.prepareStatement(
+                "SELECT idCliente, nombre, direccion, telefono, correo, dni, ciudad, provincia, codigo_postal " +
+                "FROM clientes " +
+                "WHERE LOWER(nombre) LIKE LOWER(?) AND telefono LIKE ?"
+            );
+            consulta.setString(1, "%" + nombreCliente.toLowerCase() + "%");
+            consulta.setString(2, "%" + numeroCliente + "%");
+
+            ResultSet registro = consulta.executeQuery();
+
+            while (registro.next()) {
+                Cliente pcl = new Cliente();
+                pcl.setIdCliente(registro.getInt("idCliente"));
+                pcl.setNombre(registro.getString("nombre"));
+                pcl.setDireccion(registro.getString("direccion"));
+                pcl.setTelefono(registro.getString("telefono"));
+                pcl.setCorreo(registro.getString("correo"));
+                pcl.setDni(registro.getString("dni"));
+                pcl.setCiudad(registro.getString("ciudad"));
+                pcl.setProvincia(registro.getString("provincia"));
+                pcl.setCodigoPostal(registro.getString("codigo_postal"));
+                arrTodo.add(pcl);
+            }
+
+            conexion.close();
+            return arrTodo;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+
+    
 
     /**
      * Consulta las marcas de móviles disponibles.
